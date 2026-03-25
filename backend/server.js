@@ -40,6 +40,9 @@ fs.readFile(fullPath, (err, data) => {
   else if(fullPath.endsWith('.jpg')){
     res.setHeader('Content-Type','image/jpg');
   }
+  else if(fullPath.endsWith('.mp4')){
+    res.setHeader('Content-Type','video/mp4');
+  }
   res.end(data);
 });
 });
