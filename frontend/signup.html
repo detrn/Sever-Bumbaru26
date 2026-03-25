@@ -14,40 +14,34 @@
 
 <div class="wrapper">
     <h1>Sign Up</h1>
-    <p id="error-message"> </p>
-    <form id="form">
+    <p id="mesaj-eroare"></p>
+    <form id="form-signup">
         <div>
-            <label for="firstname_input">
-                <i data-lucide="user-round"></i>              </label>
-            <input  type="text" name="firstname" id="firstname_input" placeholder="FirstName">
+            <label for="nume"><i data-lucide="user-round"></i></label>
+            <input id="nume" type="text" name="firstname" placeholder="FirstName">
         </div>
         <div>
-            <label for="email_input">
-                <i data-lucide="at-sign"></i>
-            </label>
-            <input type="email" name="email" id="email_input" placeholder="Email">
+            <label for="email"><i data-lucide="at-sign"></i></label>
+            <input id="email" type="email" name="email" placeholder="Email">
         </div>
         <div>
-            <label for="password_input">
-                <i data-lucide="key-round"></i>
-            </label>
-            <input type="password" name="password" id="password_input" placeholder="Password">
+            <label for="parola"><i data-lucide="key-round"></i></label>
+            <input id="parola" type="password" name="password" placeholder="Password">
         </div>
         <div>
-            <label for="repeat_password_input">
-                <i data-lucide="rotate-ccw-key"></i>
-            </label>
+            <label for="repeat_password_input"><i data-lucide="rotate-ccw-key"></i></label>
             <input type="password" name="repeat-password" id="repeat_password_input" placeholder="Repeat-Password">
         </div>
         <button type="submit">Signup</button>
     </form>
-    <p>Already have an account <a href="login.html">login</a></p>
+    <p>Already have an account? <a href="login.html">login</a></p>
     <video autoplay muted loop id="myVideo">
         <source src="../assets/VIDEO.mp4" type="video/mp4">
     </video>
 </div>
-<script>
-    lucide.createIcons();
-</script>
+
+<script src="js/events.js"></script>
+<script>lucide.createIcons();</script>
+
 </body>
 </html>

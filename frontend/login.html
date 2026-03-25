@@ -6,27 +6,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - Galati City</title>
   <link rel="stylesheet" href="css/style.css">
-  <script type="text/javascript" src="js/validation.js" defer></script>
 </head>
 <body>
 
 <div class="wrapper">
   <h1>Sign In</h1>
-  <p id="error-message"> </p>
+  <p id="mesaj-eroare"></p>
 
-  <form id="form">
+  <form id="form-login">
     <div>
-      <label for="email_input">
-        <i data-lucide="at-sign"></i> </label>
-      <input type="email" name="email" id="email_input" placeholder="Email">
+      <label for="email"><i data-lucide="at-sign"></i></label>
+      <input id="email" type="email" name="email" placeholder="Email">
     </div>
-
     <div>
-      <label for="password_input">
-        <i data-lucide="key-round"></i> </label>
-      <input type="password" name="password" id="password_input" placeholder="Password">
+      <label for="parola"><i data-lucide="key-round"></i></label>
+      <input id="parola" type="password" name="password" placeholder="Password">
     </div>
-
     <button type="submit">Sign In</button>
   </form>
 
@@ -37,9 +32,9 @@
   </video>
 </div>
 
-<script>
-  lucide.createIcons();
-</script>
+<script>lucide.createIcons();</script>
+<script src="js/events.js" defer></script>
+<script src="js/main.js" defer></script>
 
 </body>
 </html>
