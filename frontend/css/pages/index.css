@@ -1,0 +1,10 @@
+/* ===== STATS SECTION ===== */
+.stats-section {
+    background: var(--color-primary);
+    padding: 60px 0;
+}
+
+/* ===== SERVICES SECTION ===== */
+.services-section {
+    background: var(--color-bg);
+}
