@@ -1,1 +1,42 @@
-/* ===== ANIMATII ===== */
+/* ===== ANIMATII ===== *//* ===== STARE INITIALA (inainte de animatie) ===== */
+.fade-in,
+.slide-up,
+.slide-left,
+.slide-right {
+    opacity: 0;
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.slide-up    { transform: translateY(40px); }
+.slide-left  { transform: translateX(-50px); }
+.slide-right { transform: translateX(50px); }
+
+/* ===== STARE FINALA (cand e vizibil) ===== */
+.fade-in.visible,
+.slide-up.visible,
+.slide-left.visible,
+.slide-right.visible {
+    opacity: 1;
+    transform: translate(0);
+}
+
+/* ===== STAGGER (intarziere pentru copii) ===== */
+.stagger > *:nth-child(1) { transition-delay: 0.0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.15s; }
+.stagger > *:nth-child(3) { transition-delay: 0.30s; }
+.stagger > *:nth-child(4) { transition-delay: 0.45s; }
+
+/* ===== PARALLAX HERO ===== */
+.hero__parallax {
+    will-change: transform;
+    transition: transform 0.1s linear;
+}
+
+/* ===== NUMAR ANIMAT ===== */
+@keyframes countUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.stat-block.visible .stat-block__number {
+    animation: countUp 0.6s ease forwards;
+}
