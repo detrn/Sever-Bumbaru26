@@ -2,7 +2,7 @@
 const { createServer } = require('node:http');
 const fs = require('fs');
 const path = require('path');
-const {connectDB,getReportsCollection} = require('./database.js');
+const {connectDB,getReportsCollection} = require('./database.js'); //utilizatori, renovari, propuneri
 const {ObjectId} = require("mongodb");
 const port = 3000;
 
@@ -164,3 +164,4 @@ server.listen(port, (err) => {
     console.log(err);
   }else console.log(`Listening on port ${port}`);
 });
+

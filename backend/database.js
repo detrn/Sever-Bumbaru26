@@ -22,8 +22,15 @@ function getReportsCollection() {
   return db.collection("sesizari");
 }
 
-function getDateUtilizatori(){
-  return db.collection("dateUtilizatori");
+function getDateUtilizatori() {
+  return db.collection("utilizatori");
+}
+function getRenovari() {
+  return db.collection("renovari");
+}
+function getPropuneri() {
+  return db.collection("propuneri");
 }
 
-module.exports = { connectDB, getReportsCollection, getDateUtilizatori };
+
+module.exports = { connectDB, getReportsCollection, getDateUtilizatori,getPropuneri,getRenovari };
