@@ -2,7 +2,7 @@
 const { createServer } = require('node:http');
 const fs = require('fs');
 const path = require('path');
-const {connectDB,getReportsCollection} = require('./database.js');
+const {connectDB,getReportsCollection,getDateUtilizatori} = require('./database.js');
 const port = 3000;
 
 const server = createServer((req, res) => {
