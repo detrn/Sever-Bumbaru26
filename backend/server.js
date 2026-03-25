@@ -2,7 +2,8 @@
 const { createServer } = require('node:http');
 const fs = require('fs');
 const path = require('path');
-const {connectDB,getReportsCollection,getDateUtilizatori} = require('./database.js');
+const {connectDB,getReportsCollection} = require('./database.js');
+const {ObjectId} = require("mongodb");
 const port = 3000;
 
 const server = createServer((req, res) => {
@@ -11,6 +12,110 @@ const server = createServer((req, res) => {
   filePath = filePath.split('?')[0];
   filePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
 
+  //lucru baza de date
+
+  //adaugare sesizari baza de date
+  //pentru adaugare se trimite la api/reports cu POST !
+
+if(filePath==='api/reports' && req.method !== 'POST'){
+  if(!db){
+    console.log('No database connection fouund.');
+    return;
+  }
+  let body='';
+  req.on('data', (chunk) => body += chunk);
+  req.on('end', () => {
+    const sesizareDinFormular=JSON.parse(body);
+
+    const sesizare = {
+      nume: sesizareDinFormular.nume,
+      prenume: sesizareDinFormular.prenume,
+      locatie: sesizareDinFormular.locatie,
+      data: sesizareDinFormular.data,
+      sesizare: sesizareDinFormular.sesizare,
+      criteriuSesizare: sesizareDinFormular.criteriuSesizare,
+      cuvinteCheie: sesizareDinFormular.cuvinteCheie || [],
+      nivelUrgenta: sesizareDinFormular.nivelUrgenta || 1,
+
+
+      status: "in asteptare",
+      numarVoturi: 0,
+      dataCreare: new Date()
+    };
+
+
+
+    const collection=getReportsCollection();
+    collection.insertOne(sesizare,(err,rescult)=>{
+      if(err){
+        console.error(err);
+        return;
+      }
+      res.setHeader('Conent-Type','application/json');
+      res.end(JSON.stringify({succes:true, id:insertedId, mesaj:"Sesizare inregistrata"}));
+    })
+  });
+  return;
+}
+
+  //vizualizare sesizari baza de date
+  //pentru adaugare se trimite la api/reports cu GET !
+
+  if(filePath==='api/reports' && req.method==='GET'){
+    if(!db){
+      console.log('No database connection found.');
+      return;
+    }
+    const colectie=getReportsCollection(db);
+    colectie.find({}).toArray((err,docs)=>{
+      if(err){
+        console.error(err);
+        return;
+      }
+      res.setHeader('Content-type','application/json');
+      res.end(JSON.stringify(docs));
+    })
+  }
+// PUT /api/reports/:id/vote pentru adaugfare coturi --url necesar pentru incrementarea voturilor
+  if(filePath.startsWith('api/reports') && filePath.endsWith('/vote') && req.method === 'PUT'){
+    const id = filePath.split('?')[0];
+    const {ObjectId} = require('mongodb');
+    const collection=getReportsCollection();
+    collection.updateOne({_id: ObjectId}, {$inc: {numarVoturi:1}}, (err,docs)=>{
+      if(err){
+        console.error(err);
+        return;
+      }
+      res.setHeader('Content-type','application/json');
+      res.end(JSON.stringify({succes:true},{mesaj: "Vot intregistrat!"}));
+    }
+    );
+    return;
+    }
+//pentru decrementat numarul de voturi -- acelasi apel la url
+  if(filePath.startsWith('api/reports') && filePath.endsWith('/vote') && req.method === 'PUT'){
+    const id = filePath.split('?')[0];
+    const {ObjectId} = require('mongodb');
+    const collection=getReportsCollection();
+    collection.updateOne({_id: ObjectId}, {$inc: {numarVoturi:-1}}, (err,docs)=>{
+          if(err){
+            console.error(err);
+            return;
+          }
+          res.setHeader('Content-type','application/json');
+          res.end(JSON.stringify({succes:true},{mesaj: "Vot intregistrat!"}));
+        }
+    );
+    return;
+  }
+
+
+
+
+//lucru pagini si server
+
+
+  //gestionare pagini
   let fullPath;
   if(filePath===''){
     fullPath='../frontend/login.html';
@@ -52,10 +157,8 @@ const server = createServer((req, res) => {
 let db;
 connectDB().then((database) => {
   db=database;
-
-
 })
-//initializare server
+//ascultate e sv
 server.listen(port, (err) => {
   if(err){
     console.log(err);
