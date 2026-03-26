@@ -2,7 +2,13 @@
 const { createServer } = require('node:http');
 const fs   = require('fs');
 const path = require('path');
-const { connectDB, getReportsCollection, getUsersCollection, getPropuneriCollection } = require('./database.js');
+const {
+  connectDB,
+  getDezvoltareUrbanaCollection,
+  getPropuneriCollection,
+  getReportsCollection,
+  getUsersCollection,
+} = require('./database.js');
 const { ObjectId } = require('mongodb');
 const port = 3000;
 
@@ -213,6 +219,22 @@ const server = createServer(async (req, res) => {
     const docs = await colectie.find({}).toArray();
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(docs));
+    return;
+  }
+
+  // ===== API/DEZVOLTARE URBANA GET =====
+  if (filePath === "api/dezvoltare-urbana" && req.method === "GET") {
+    try {
+      const colectie = getDezvoltareUrbanaCollection();
+      const docs = await colectie.find({}).sort({ ordine: 1, dataCreare: 1 }).toArray();
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(docs));
+    } catch (err) {
+      console.error("EROARE api/dezvoltare-urbana GET:", err);
+      res.statusCode = 500;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ succes: false, mesaj: err.message }));
+    }
     return;
   }
 

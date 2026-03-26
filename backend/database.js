@@ -6,6 +6,7 @@ const uri =
 
 const client = new MongoClient(uri);
 let db;
+let dezvoltareUrbanaCollection;
 
 async function connectDB() {
   try {
@@ -35,4 +36,17 @@ function getPropuneriCollection() {
   return propuneriCollection;
 }
 
-module.exports = { connectDB, getPropuneriCollection, getReportsCollection, getUsersCollection, };
+function getDezvoltareUrbanaCollection() {
+  if (!dezvoltareUrbanaCollection) {
+    dezvoltareUrbanaCollection = db.collection("dezvoltare_urbana");
+  }
+  return dezvoltareUrbanaCollection;
+}
+
+module.exports = {
+  connectDB,
+  getDezvoltareUrbanaCollection,
+  getPropuneriCollection,
+  getReportsCollection,
+  getUsersCollection,
+};
