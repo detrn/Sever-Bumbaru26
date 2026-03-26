@@ -1,7 +1,7 @@
 // ===== INIT =====
-document.addEventListener('DOMContentLoaded', () => {
-    initNavbarScroll();
-    initParallax();
-    initAnimations();
-    initEvents();
+document.addEventListener("DOMContentLoaded", () => {
+  initNavbarScroll();
+  initParallax();
+  initAnimations();
+  initEvents();
 });

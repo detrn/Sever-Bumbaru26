@@ -38,7 +38,6 @@
 
 #a11y-panel {
     background: rgba(0, 0, 0, 0.85) !important;
-    backdrop-filter: blur(10px) !important;
     border-radius: 16px !important;
     border: 1px solid rgba(255, 255, 255, 0.2) !important;
     color: #FFFFFF !important;

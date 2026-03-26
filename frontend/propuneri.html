@@ -8,19 +8,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/pages/propuneri.css">
     <link rel="stylesheet" href="css/componente/navbar.css">
+    <link rel="stylesheet" href="css/accesibilitate.css">
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
 <nav class="navbar">
     <div class="container navbar__inner">
-        <a href="index.html" class="navbar__logo">Orașul <span>Tău</span></a>
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/logo.png" alt="Logo Galați" class="navbar__logo-img">
+            <div class="navbar__logo-text">Orașul <span>Tău</span></div>
+        </a>
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
-
-            <li><a href="propuneriForum.html"><i data-lucide="messages-square"></i> Forum</a></li>
-
+            <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
             <li class="dropdown">
                 <a href="#" id="sesizari-toggle">
                     <i data-lucide="alert-circle"></i> Sesizări <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
@@ -50,7 +52,6 @@
 </div>
 
 <div class="page">
-
     <div class="card">
         <div class="toggle-label">Tipul propunerii</div>
         <div class="toggle-wrap">
@@ -74,7 +75,6 @@
 
         <form id="propuneri-form">
             <div class="form-grid">
-
                 <div class="field" id="campuri-oras-categorie">
                     <label for="categorie-oras">Categorie</label>
                     <select id="categorie-oras" name="categorie_oras">
@@ -152,18 +152,27 @@ Observații suplimentare:</pre>
                     <button type="submit" class="btn-primary"><i data-lucide="send" style="width: 18px; height: 18px; margin-right: 8px;"></i>Trimite propunerea</button>
                     <button type="reset" class="btn-secondary"><i data-lucide="trash-2" style="width: 18px; height: 18px; margin-right: 8px;"></i>Resetează</button>
                 </div>
-
             </div>
         </form>
     </div>
+</div>
 
+<div class="accessibility-widget">
+    <button class="accessibility-btn" id="accessibility-main-btn" title="Opțiuni accesibilitate">
+        <i data-lucide="accessibility"></i>
+    </button>
+    <div class="accessibility-menu" id="accessibility-menu">
+        <button onclick="toggleContrast()">Contrast Ridicat</button>
+        <button onclick="increaseFontSize()">Mărește Textul</button>
+        <button onclick="resetAccessibility()">Resetează</button>
+    </div>
 </div>
 
 <script>
     lucide.createIcons();
 </script>
 <script src="js/functionalitatePagini/propuneri.js"></script>
-<script src="js/accessibility.js"></script>
+<script src="js/accesibilitate.js"></script>
 
 </body>
 </html>
