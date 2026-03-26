@@ -98,10 +98,6 @@ function renderForum() {
          <div class="lb-avatar" style="width:24px; height:24px; font-size:0.7rem;">${(p.autor || p.nume || "A").charAt(0).toUpperCase()}</div>
          <span style="font-size:0.85rem; font-weight:600;">${p.autor || p.nume || "Anonim"}</span>
       </div>
-      
-   
-     // În renderForum(), în template-ul fiecărei propuneri, secțiunea comentarii devine:
-
 <div class="comments-section">
   <h4>Comentarii</h4>
   <div id="comments-${cleanId}" class="comments-list">
