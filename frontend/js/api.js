@@ -98,19 +98,9 @@ window.addEventListener("load", function () {
   }
 });
 
-document.addEventListener("DOMContentLoaded", () => {
-  const toggle = document.getElementById("sesizari-toggle");
-  const menu = document.querySelector(".dropdown-menu");
+window.addEventListener("load", () => {
 
-  if (toggle && menu) {
-    toggle.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      menu.classList.toggle("show");
-    });
-
-    document.addEventListener("click", () => {
-      menu.classList.remove("show");
-    });
-  }
+  setTimeout(() => {
+    moveSlider(1);
+  }, 50);
 });

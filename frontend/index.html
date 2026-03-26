@@ -20,13 +20,14 @@
 
 <nav class="navbar">
     <div class="container navbar__inner">
-        <a href="index.html" class="navbar__logo">Orașul <span>Tău</span></a>
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/logo.png" alt="Logo Galați" class="navbar__logo-img">
+            <div class="navbar__logo-text">Orașul <span>Tău</span></div>
+        </a>
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
-
-            <li><a href="propuneriForum.html"><i data-lucide="messages-square"></i> Forum</a></li>
-
+            <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
             <li class="dropdown">
                 <a href="#" id="sesizari-toggle">
                     <i data-lucide="alert-circle"></i> Sesizări <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
@@ -95,8 +96,10 @@
 
         <div class="pastille-controls-area reveal-from-bottom">
             <div class="filter-pastille">
-                <button class="pastille-btn active" onclick="moveSlider(0)">Sesizări</button>
-                <button class="pastille-btn" onclick="moveSlider(1)">Dezvoltare Urbană</button>
+                <button class="pastille-btn" onclick="moveSlider(0)">Sesizări</button>
+
+                <button class="pastille-btn active" onclick="moveSlider(1)">Renovări</button>
+
                 <button class="pastille-btn" onclick="moveSlider(2)">Propuneri</button>
             </div>
         </div>
@@ -113,11 +116,11 @@
                     </div>
                 </div>
             </a>
-            <a href="DezvoltareUrbana.html" class="img-card inactive-card">
+            <a href="renovari.html" class="img-card inactive-card">
                 <img src="../assets/poza2.jpg" alt="Renovari" class="img-card__photo">
                 <div class="img-card__banner">
                     <div class="img-card__content-wrap">
-                        <h3 class="img-card__title"><i data-lucide="hammer"></i> Dezvoltare Urbană</h3>
+                        <h3 class="img-card__title"><i data-lucide="hammer"></i> Renovări</h3>
                         <p class="img-card__desc">Fii la curent cu stadiul lucrărilor de modernizare, infrastructură și reabilitare din orașul tău.</p>
                     </div>
                 </div>
