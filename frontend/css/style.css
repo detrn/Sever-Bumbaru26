@@ -78,6 +78,7 @@ form label{
 
 }
 form input{
+    color: var(--text-color);
     box-sizing: border-box;
     flex-grow:1;
     min-width: 0;
@@ -144,6 +145,13 @@ form div.incorrect input{
 }
 #error-message{
     color: #f06272;
+}
+
+[data-lucide] {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+    color: var(--label-icon); /* Iconițele rămân albe în label-ul albastru */
 }
 
 [data-lucide] {

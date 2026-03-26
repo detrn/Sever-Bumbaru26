@@ -1,167 +1,182 @@
-//dependente
+// ===== DEPENDENȚE =====
 const { createServer } = require('node:http');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
-const {connectDB,getReportsCollection} = require('./database.js'); //utilizatori, renovari, propuneri
-const {ObjectId} = require("mongodb");
+const { connectDB, getReportsCollection, getUsersCollection, getPropuneriCollection } = require('./database.js');
+const { ObjectId } = require('mongodb');
 const port = 3000;
 
-const server = createServer((req, res) => {
-  let filePath=req.url;
+let db;
 
-  filePath = filePath.split('?')[0];
+const server = createServer(async (req, res) => {
+  let filePath = req.url.split('?')[0];
   filePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
 
-  //lucru baza de date
-
-  //adaugare sesizari baza de date
-  //pentru adaugare se trimite la api/reports cu POST !
-
-if(filePath==='api/reports' && req.method !== 'POST'){
-  if(!db){
-    console.log('No database connection fouund.');
-    return;
-  }
-  let body='';
-  req.on('data', (chunk) => body += chunk);
-  req.on('end', () => {
-    const sesizareDinFormular=JSON.parse(body);
-
-    const sesizare = {
-      nume: sesizareDinFormular.nume,
-      prenume: sesizareDinFormular.prenume,
-      locatie: sesizareDinFormular.locatie,
-      data: sesizareDinFormular.data,
-      sesizare: sesizareDinFormular.sesizare,
-      criteriuSesizare: sesizareDinFormular.criteriuSesizare,
-      cuvinteCheie: sesizareDinFormular.cuvinteCheie || [],
-      nivelUrgenta: sesizareDinFormular.nivelUrgenta || 1,
-
-
-      status: "in asteptare",
-      numarVoturi: 0,
-      dataCreare: new Date()
-    };
-
-
-
-    const collection=getReportsCollection();
-    collection.insertOne(sesizare,(err,rescult)=>{
-      if(err){
-        console.error(err);
-        return;
+  // ===== API/PROPUNERI POST =====
+  if (filePath === 'api/propuneri' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const date = JSON.parse(body);
+        const propunere = {
+          tip:           date.tip,
+          titlu:         date.titlu,
+          problema:      date.problema,
+          solutie:       date.solutie,
+          impact:        date.impact,
+          categorieOras: date.categorieOras || null,
+          zonaOras:      date.zonaOras      || null,
+          sectiuneSite:  date.sectiuneSite  || null,
+          tipSite:       date.tipSite       || null,
+          status:        'in asteptare',
+          dataCreare:    new Date()
+        };
+        const col = getPropuneriCollection();        // ← fără require, folosește importul de sus
+        const result = await col.insertOne(propunere);
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ succes: true, id: result.insertedId }));
+      } catch (err) {
+        console.error('EROARE api/propuneri:', err); // ← vei vedea eroarea exactă în terminal
+        res.statusCode = 500;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ succes: false, mesaj: err.message }));
       }
-      res.setHeader('Conent-Type','application/json');
-      res.end(JSON.stringify({succes:true, id:insertedId, mesaj:"Sesizare inregistrata"}));
-    })
-  });
-  return;
-}
-
-  //vizualizare sesizari baza de date
-  //pentru adaugare se trimite la api/reports cu GET !
-
-  if(filePath==='api/reports' && req.method==='GET'){
-    if(!db){
-      console.log('No database connection found.');
-      return;
-    }
-    const colectie=getReportsCollection(db);
-    colectie.find({}).toArray((err,docs)=>{
-      if(err){
-        console.error(err);
-        return;
-      }
-      res.setHeader('Content-type','application/json');
-      res.end(JSON.stringify(docs));
-    })
-  }
-// PUT /api/reports/:id/vote pentru adaugfare coturi --url necesar pentru incrementarea voturilor
-  if(filePath.startsWith('api/reports') && filePath.endsWith('/vote') && req.method === 'PUT'){
-    const id = filePath.split('?')[0];
-    const {ObjectId} = require('mongodb');
-    const collection=getReportsCollection();
-    collection.updateOne({_id: ObjectId}, {$inc: {numarVoturi:1}}, (err,docs)=>{
-      if(err){
-        console.error(err);
-        return;
-      }
-      res.setHeader('Content-type','application/json');
-      res.end(JSON.stringify({succes:true},{mesaj: "Vot intregistrat!"}));
-    }
-    );
-    return;
-    }
-//pentru decrementat numarul de voturi -- acelasi apel la url
-  if(filePath.startsWith('api/reports') && filePath.endsWith('/vote') && req.method === 'PUT'){
-    const id = filePath.split('?')[0];
-    const {ObjectId} = require('mongodb');
-    const collection=getReportsCollection();
-    collection.updateOne({_id: ObjectId}, {$inc: {numarVoturi:-1}}, (err,docs)=>{
-          if(err){
-            console.error(err);
-            return;
-          }
-          res.setHeader('Content-type','application/json');
-          res.end(JSON.stringify({succes:true},{mesaj: "Vot intregistrat!"}));
-        }
-    );
+    });
     return;
   }
 
+  // ===== API/SIGNUP =====
+  if (filePath === 'api/signup' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const { email, parola, nume } = JSON.parse(body);
+      const usersCol = getUsersCollection();
+      const existent = await usersCol.findOne({ email });
+      if (existent) {
+        res.statusCode = 409;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ succes: false, mesaj: 'Email deja înregistrat' }));
+        return;
+      }
+      await usersCol.insertOne({ email, parola, nume });
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ succes: true }));
+    });
+    return;
+  }
 
+  // ===== API/LOGIN =====
+  if (filePath === 'api/login' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const { email, parola } = JSON.parse(body);
+      const usersCol = getUsersCollection();
+      const user = await usersCol.findOne({ email, parola });
+      if (!user) {
+        res.statusCode = 401;
+        res.setHeader('Content-Type', 'application/json');
+        res.end(JSON.stringify({ succes: false, mesaj: 'Email sau parolă greșită' }));
+        return;
+      }
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ succes: true, user: { email: user.email, nume: user.nume } }));
+    });
+    return;
+  }
 
+  // ===== API/REPORTS POST =====
+  if (filePath === 'api/reports' && req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      const sesizareDinFormular = JSON.parse(body);
+      const sesizare = {
+        nume:             sesizareDinFormular.nume,
+        prenume:          sesizareDinFormular.prenume,
+        locatie:          sesizareDinFormular.locatie,
+        data:             sesizareDinFormular.data,
+        sesizare:         sesizareDinFormular.sesizare,
+        criteriuSesizare: sesizareDinFormular.criteriuSesizare,
+        cuvinteCheie:     sesizareDinFormular.cuvinteCheie || [],
+        nivelUrgenta:     sesizareDinFormular.nivelUrgenta || 1,
+        status:           'in asteptare',
+        numarVoturi:      0,
+        dataCreare:       new Date()
+      };
+      const collection = getReportsCollection();
+      const result = await collection.insertOne(sesizare);
+      res.setHeader('Content-Type', 'application/json');
+      res.end(JSON.stringify({ succes: true, id: result.insertedId, mesaj: 'Sesizare înregistrată' }));
+    });
+    return;
+  }
 
-//lucru pagini si server
+  // ===== API/REPORTS GET =====
+  if (filePath === 'api/reports' && req.method === 'GET') {
+    const colectie = getReportsCollection();
+    const docs = await colectie.find({}).toArray();
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify(docs));
+    return;
+  }
 
+  // ===== VOTE +1 =====
+  if (filePath.startsWith('api/reports') && filePath.endsWith('/upvote') && req.method === 'PUT') {
+    const id = filePath.split('/')[2];
+    const collection = getReportsCollection();
+    await collection.updateOne({ _id: new ObjectId(id) }, { $inc: { numarVoturi: 1 } });
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ succes: true, mesaj: 'Vot adăugat' }));
+    return;
+  }
 
-  //gestionare pagini
+  // ===== VOTE -1 =====
+  if (filePath.startsWith('api/reports') && filePath.endsWith('/downvote') && req.method === 'PUT') {
+    const id = filePath.split('/')[2];
+    const collection = getReportsCollection();
+    await collection.updateOne({ _id: new ObjectId(id) }, { $inc: { numarVoturi: -1 } });
+    res.setHeader('Content-Type', 'application/json');
+    res.end(JSON.stringify({ succes: true, mesaj: 'Vot eliminat' }));
+    return;
+  }
+
+  // ===== SERVIRE FIȘIERE STATICE =====
   let fullPath;
-  if(filePath===''){
-    fullPath='../frontend/login.html';
-  }
-  else if(filePath.startsWith('assets/')) {
+  if (filePath === '') {
+    fullPath = '../frontend/login.html';
+  } else if (filePath.startsWith('assets/')) {
     fullPath = `../${filePath}`;
-  }
-  else {
-    if(!path.extname(filePath) && !filePath.includes('.') && !filePath.startsWith('assets/'))
-      filePath = filePath + '.html';
-    fullPath='../frontend/' + filePath;
+  } else {
+    if (!path.extname(filePath)) filePath = filePath + '.html';
+    fullPath = '../frontend/' + filePath;
   }
 
   fs.readFile(fullPath, (err, data) => {
-    if(err){
+    if (err) {
       res.statusCode = 404;
-      console.error(err);
+      res.end('Pagina nu a fost găsită');
       return;
     }
-
-    if(fullPath.endsWith('.html')){
-      res.setHeader('Content-Type','text/html');
-    }
-    else if(fullPath.endsWith('.css')){
-      res.setHeader('Content-Type','text/css');
-    }
-    else if(fullPath.endsWith('.js')){
-      res.setHeader('Content-Type','application/javascript');
-    }
-    else if(fullPath.endsWith('.jpg')){
-      res.setHeader('Content-Type','image/jpg');
-    }
-    else if(fullPath.endsWith('.mp4')){
-      res.setHeader('Content-Type','video/mp4');
-    }
+    const ext = path.extname(fullPath);
+    const types = {
+      '.html': 'text/html',
+      '.css':  'text/css',
+      '.js':   'application/javascript',
+      '.jpg':  'image/jpeg',
+      '.png':  'image/png',
+      '.mp4':  'video/mp4',
+      '.svg':  'image/svg+xml'
+    };
+    res.setHeader('Content-Type', types[ext] || 'text/plain');
     res.end(data);
   });
 });
-let db;
-connectDB().then((database) => {
-  db=database;
-})
-//ascultate e sv
-server.listen(port, (err) => {
-  if(err){
-    console.log(err);
-  }else console.log(`Listening on port ${port}`);
-});
 
+// ===== PORNIRE =====
+connectDB().then((database) => {
+  db = database;
+  server.listen(port, () => console.log(`Server pornit pe http://localhost:${port}`));
+});
