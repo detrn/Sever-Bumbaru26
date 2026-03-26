@@ -12,33 +12,32 @@ const server = createServer(async (req, res) => {
   filePath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
 
   // ===== API/PROPUNERI POST =====
-  if (filePath === 'api/propuneri' && req.method === 'POST') {
+  // ===== API/REPORTS POST =====
+  if (filePath === 'api/reports' && req.method === 'POST') {
     let body = '';
     req.on('data', chunk => body += chunk);
     req.on('end', async () => {
       try {
-        const date = JSON.parse(body);
-        const propunere = {
-          autor : date.autor || 'Anonim',
+        const d = JSON.parse(body);
+        const sesizare = {
+          autor:      d.autor     || 'Anonim',
+          tip:        d.tip       || 'obisnuita',
+          categorie:  d.categorie || 'Altele',
+          prioritate: d.prioritate|| 'Medie',
+          titlu:      d.titlu     || '',
+          descriere:  d.descriere || '',
+          lat:        d.lat       || null,      // ← coordonate salvate
+          lng:        d.lng       || null,
+          status:     'in asteptare',
           numarVoturi: 0,
-          tip:           date.tip,
-          titlu:         date.titlu,
-          problema:      date.problema,
-          solutie:       date.solutie,
-          impact:        date.impact,
-          categorieOras: date.categorieOras || null,
-          zonaOras:      date.zonaOras      || null,
-          sectiuneSite:  date.sectiuneSite  || null,
-          tipSite:       date.tipSite       || null,
-          status:        'in asteptare',
-          dataCreare:    new Date()
+          dataCreare: new Date()
         };
-        const col = getPropuneriCollection();        // ← fără require, folosește importul de sus
-        const result = await col.insertOne(propunere);
+        const collection = getReportsCollection();
+        const result = await collection.insertOne(sesizare);
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ succes: true, id: result.insertedId }));
       } catch (err) {
-        console.error('EROARE api/propuneri:', err); // ← vei vedea eroarea exactă în terminal
+        console.error('EROARE api/reports POST:', err);
         res.statusCode = 500;
         res.setHeader('Content-Type', 'application/json');
         res.end(JSON.stringify({ succes: false, mesaj: err.message }));
@@ -46,6 +45,7 @@ const server = createServer(async (req, res) => {
     });
     return;
   }
+
 
   // ===== API/SIGNUP =====
   if (filePath === 'api/signup' && req.method === 'POST') {
