@@ -26,6 +26,26 @@ async function postData(endpoint, body) {
   }
 }
 
+async function loadResolvedReportsCount() {
+  const counter = document.getElementById("resolved-reports-count");
+  if (!counter) return;
+
+  const reports = await getData("reports");
+  if (!Array.isArray(reports)) return;
+
+  const resolvedCount = reports.filter((report) => {
+    const status = String(report?.status || "").trim().toLowerCase();
+    return (
+      status === "rezolvat" ||
+      status === "rezolvata" ||
+      status === "resolved" ||
+      status.includes("rezolv")
+    );
+  }).length;
+
+  counter.textContent = String(resolvedCount);
+}
+
 function IntraCaOaspete() {
   localStorage.setItem("userRole", "Oaspete");
   localStorage.setItem("userName", "Vizitator");
@@ -67,6 +87,10 @@ window.addEventListener("load", () => {
   if (document.getElementById("slider-track")) {
     window.moveSlider(0);
   }
+});
+
+window.addEventListener("DOMContentLoaded", () => {
+  loadResolvedReportsCount();
 });
 
 window.addEventListener("resize", () => {
