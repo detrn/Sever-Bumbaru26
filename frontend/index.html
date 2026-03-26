@@ -3,92 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Numele Orașului — Pagina Principală</title>
+    <title>Orașul Tău — Pagina Principală</title>
+
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/pages/index.css">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/ButonSpecial.css">
+    <link rel="stylesheet" href="css/accesibilitate.css">
+    <link rel="stylesheet" href="css/componente/navbar.css">
+
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
-<div id="a11y-widget" role="region" aria-label="Meniu accesibilitate">
-    <div id="a11y-panel" role="dialog" aria-label="Opțiuni accesibilitate">
-        <div class="a11y-heading">Accesibilitate</div>
-        <div class="a11y-option" id="opt-fontsize" role="group" aria-label="Mărire text">
-            <div class="a11y-option__left">
-                <div class="a11y-option__icon"><i data-lucide="type"></i></div>
-                <div>
-                    <div class="a11y-option__label">Mărime text</div>
-                    <div class="a11y-option__sublabel">Ajustează dimensiunea</div>
-                </div>
-            </div>
-            <div class="a11y-size-ctrl">
-                <button onclick="changeFont(-1)" aria-label="Micșorează text">−</button>
-                <span class="a11y-size-val" id="font-val">100%</span>
-                <button onclick="changeFont(1)" aria-label="Mărește text">+</button>
-            </div>
-        </div>
-        <div class="a11y-divider"></div>
-        <button class="a11y-option" id="opt-contrast" onclick="toggleA11y('contrast', this)" aria-pressed="false" aria-label="Activează contrast ridicat">
-            <div class="a11y-option__left">
-                <div class="a11y-option__icon"><i data-lucide="moon"></i></div>
-                <div>
-                    <div class="a11y-option__label">Contrast ridicat</div>
-                    <div class="a11y-option__sublabel">Vizibilitate sporită</div>
-                </div>
-            </div>
-            <div class="a11y-switch" aria-hidden="true"></div>
-        </button>
-        <button class="a11y-option" id="opt-underline" onclick="toggleA11y('underline', this)" aria-pressed="false" aria-label="Subliniază linkurile">
-            <div class="a11y-option__left">
-                <div class="a11y-option__icon"><i data-lucide="link"></i></div>
-                <div>
-                    <div class="a11y-option__label">Subliniere linkuri</div>
-                    <div class="a11y-option__sublabel">Mai ușor de identificat</div>
-                </div>
-            </div>
-            <div class="a11y-switch" aria-hidden="true"></div>
-        </button>
-        <button class="a11y-option" id="opt-dyslexia" onclick="toggleA11y('dyslexia', this)" aria-pressed="false" aria-label="Activează font pentru dislexie">
-            <div class="a11y-option__left">
-                <div class="a11y-option__icon"><i data-lucide="book-open"></i></div>
-                <div>
-                    <div class="a11y-option__label">Font dislexie</div>
-                    <div class="a11y-option__sublabel">Lectură facilitată</div>
-                </div>
-            </div>
-            <div class="a11y-switch" aria-hidden="true"></div>
-        </button>
-        <button class="a11y-option" id="opt-cursor" onclick="toggleA11y('cursor', this)" aria-pressed="false" aria-label="Activează cursor mare">
-            <div class="a11y-option__left">
-                <div class="a11y-option__icon"><i data-lucide="mouse-pointer-2"></i></div>
-                <div>
-                    <div class="a11y-option__label">Cursor mare</div>
-                    <div class="a11y-option__sublabel">Vizibilitate cursor</div>
-                </div>
-            </div>
-            <div class="a11y-switch" aria-hidden="true"></div>
-        </button>
-        <div class="a11y-divider"></div>
-        <button id="a11y-reset" onclick="resetA11y()"><i data-lucide="rotate-ccw"></i> Resetează setările</button>
-    </div>
-    <button id="a11y-toggle" onclick="togglePanel()" aria-expanded="false" aria-controls="a11y-panel" aria-label="Deschide meniul de accesibilitate" title="Accesibilitate">
-        <i data-lucide="accessibility"></i>
-    </button>
-</div>
-
 <nav class="navbar">
     <div class="container navbar__inner">
-        <a href="index.html" class="navbar__logo">
-            Orașul <span>Tău</span>
-        </a>
+        <a href="index.html" class="navbar__logo">Orașul <span>Tău</span></a>
         <ul class="navbar__links">
-            <li><a href="index.html" class="active"><i data-lucide="home"></i> Acasă</a></li>
+            <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
-            <li><a href="sesizari.html"><i data-lucide="alert-circle"></i> Sesizări</a></li>
+
+            <li><a href="propuneriForum.html"><i data-lucide="messages-square"></i> Forum</a></li>
+
+            <li class="dropdown">
+                <a href="#" id="sesizari-toggle">
+                    <i data-lucide="alert-circle"></i> Sesizări <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="sesizari.html"><i data-lucide="edit-3"></i> Depune sesizare</a></li>
+                    <li><a href="toate-sesizarile.html"><i data-lucide="list"></i> Toate sesizările</a></li>
+                </ul>
+            </li>
         </ul>
     </div>
 </nav>
@@ -206,8 +153,8 @@
             <div>
                 <div class="footer__heading">Contact</div>
                 <ul class="footer__links">
-                    <li><i data-lucide="phone" style="width:16px;height:16px;"></i> 0234 000 000</li>
-                    <li><i data-lucide="mail" style="width:16px;height:16px;"></i> contact@oras.ro</li>
+                    <li><i data-lucide="phone"></i> 0234 000 000</li>
+                    <li><i data-lucide="mail"></i> contact@oras.ro</li>
                 </ul>
             </div>
         </div>
@@ -223,6 +170,16 @@
 <script src="js/events.js" defer></script>
 <script src="js/main.js" defer></script>
 <script src="js/ButonSpecial.js" defer></script>
+<script src="js/accesibilitate.js" defer></script>
+
+<script>
+    // Asigurăm inițializarea iconițelor după ce accesibilitatea injectează widget-ul
+    window.addEventListener('load', () => {
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+    });
+</script>
 
 </body>
 </html>

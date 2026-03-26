@@ -22,9 +22,6 @@ html {
     text-align: center;
 }
 
-/* =========================================
-   LOGIN WRAPPER & FORM
-   ========================================= */
 .wrapper {
     background-color: var(--base-color);
     height: 100vh;
@@ -35,6 +32,7 @@ html {
     align-items: center;
     flex-direction: column;
     justify-content: center;
+    margin-top: 0 !important;
 }
 
 #myVideo {
@@ -156,18 +154,15 @@ form button:hover {
     stroke: #FFFFFF !important;
 }
 
-/* =========================================
-   PANOU ACCESSIBILITATE (Semi-Transparent)
-   ========================================= */
 #a11y-panel {
-    background: rgba(0, 0, 0, 0.1) !important; /* Opacitate 10% (negru transparent) */
+    background: rgba(0, 0, 0, 0.1) !important;
     background-color: rgba(0, 0, 0, 0.1) !important;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #FFFFFF !important;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     padding: 20px;
-    backdrop-filter: blur(8px); /* Adaugă blur fin pentru citibilitate pe fundaluri complexe */
+    backdrop-filter: blur(8px);
 }
 
 .a11y-heading {
@@ -253,9 +248,6 @@ form button:hover {
     background: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* =========================================
-   HERO SECTION
-   ========================================= */
 .hero {
     position: relative;
     width: 100%;
@@ -320,9 +312,6 @@ form button:hover {
     border: 2px solid white;
 }
 
-/* =========================================
-   STATS & REVEAL
-   ========================================= */
 .stat-icon {
     width: 48px;
     height: 48px;
@@ -341,9 +330,6 @@ form button:hover {
     transform: translateY(0);
 }
 
-/* =========================================
-   SERVICES SLIDER (Pastille & Cards)
-   ========================================= */
 .filter-pastille {
     display: inline-flex;
     background: #000000;
@@ -456,119 +442,4 @@ form button:hover {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    padding: 15px 0;
-}
-
-.navbar__inner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-@keyframes slideInLeft {
-    0% {
-        transform: translateX(-300px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-@keyframes slideInRight {
-    0% {
-        transform: translateX(300px);
-        opacity: 0;
-    }
-    100% {
-        transform: translateX(0);
-        opacity: 1;
-    }
-}
-
-.navbar__logo {
-    font-size: 24px;
-    font-weight: 900;
-    text-decoration: none;
-    color: #0f172a;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    font-family: 'Montserrat', sans-serif;
-    animation: slideInLeft 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.navbar__logo span {
-    color: #2563eb;
-}
-
-.navbar__links {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-    animation: slideInRight 1.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-}
-
-.navbar__links a {
-    text-decoration: none;
-    color: #475569;
-    font-weight: 700;
-    font-size: 15px;
-    transition: color 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-family: 'Montserrat', sans-serif;
-}
-
-.navbar__links a:hover {
-    color: #2563eb;
-}
-
-
-.navbar__links li:nth-child(1) a {
-    color: #2563eb;
-}
-
-.navbar__links i,
-.navbar__links [data-lucide] {
-    width: 18px;
-    height: 18px;
-    stroke-width: 2.5;
-}
-
-
-.hero, .wrapper {
-    margin-top: 75px;
-}
-.navbar__links a,
-.navbar__links a:hover,
-.navbar__links a.active,
-.navbar__links li:last-child a {
-    text-decoration: none !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-    padding-bottom: 0 !important;
-}
-
-.navbar__links a::after,
-.navbar__links a::before {
-    display: none !important;
-    content: none !important;
-}
-
-.navbar__links li {
-    border-bottom: none !important;
 }

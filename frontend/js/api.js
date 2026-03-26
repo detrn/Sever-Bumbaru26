@@ -29,9 +29,9 @@ async function postData(endpoint, body) {
 function IntraCaOaspete() {
   localStorage.setItem("userRole", "Oaspete");
   localStorage.setItem("userName", "Vizitator");
-
   window.location.href = "index.html";
 }
+
 window.moveSlider = function (index) {
   const track = document.getElementById("slider-track");
   const cards = document.querySelectorAll(".img-card");
@@ -78,3 +78,39 @@ window.addEventListener("resize", () => {
   }
 });
 
+// Aici e logica de butoane "Află mai multe" și "Depune sesizare"
+window.addEventListener("load", function () {
+  const btnAfla = document.getElementById("btn-afla-mai-multe");
+  const btnSesizare = document.getElementById("btn-sesizare");
+
+  if (btnAfla) {
+    btnAfla.onclick = function (e) {
+      e.preventDefault();
+      window.location.href = "despre.html";
+    };
+  }
+
+  if (btnSesizare) {
+    btnSesizare.onclick = function (e) {
+      e.preventDefault();
+      window.location.href = "sesizari.html";
+    };
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggle = document.getElementById("sesizari-toggle");
+  const menu = document.querySelector(".dropdown-menu");
+
+  if (toggle && menu) {
+    toggle.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      menu.classList.toggle("show");
+    });
+
+    document.addEventListener("click", () => {
+      menu.classList.remove("show");
+    });
+  }
+});
