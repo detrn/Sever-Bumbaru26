@@ -100,6 +100,10 @@
             <button class="feed-chip" data-filter="Siguranță rutieră"><span class="chip-dot" style="background:#e53e3e"></span>Siguranță</button>
             <button class="feed-chip" data-filter="Altele"><span class="chip-dot" style="background:#94a3b8"></span>Altele</button>
         </div>
+        <div class="feed-search">
+            <i data-lucide="search" class="feed-search__icon"></i>
+            <input type="search" id="feed-search-input" class="feed-search__input" placeholder="Caută după titlu, autor, zonă sau categorie" aria-label="Caută sesizări">
+        </div>
         <div class="feed-sort">
             <label for="sort-select" class="feed-sort__label"><i data-lucide="filter" style="width:14px; height:14px; vertical-align:middle;"></i> Sortează:</label>
             <select id="sort-select" class="feed-sort__select">
@@ -183,6 +187,7 @@
     let SESIZARI     = [];
     let activeFilter = 'toate';
     let activeSort   = 'data-desc';
+    let activeQuery  = '';
     let mapMarkers   = [];
 
     // VERIFICARE ROL UTILIZATOR
@@ -300,7 +305,20 @@
     }
 
     function renderFeed() {
-        let list = SESIZARI.filter(s => activeFilter === 'toate' || s.categorie === activeFilter);
+        let list = SESIZARI
+            .filter(s => activeFilter === 'toate' || s.categorie === activeFilter)
+            .filter(s => {
+                if (!activeQuery) return true;
+                const haystack = [
+                    s.titlu,
+                    s.descriere,
+                    s.categorie,
+                    s.autor,
+                    s.zona,
+                    s.status
+                ].filter(Boolean).join(' ').toLowerCase();
+                return haystack.includes(activeQuery);
+            });
 
         // Sortare
         if (activeSort === 'data-desc')  sortWithResolvedLast(list, (a,b)=>new Date(b.dataCreare||0)-new Date(a.dataCreare||0));
@@ -476,6 +494,11 @@
 
     document.getElementById('sort-select').addEventListener('change', e => {
         activeSort = e.target.value;
+        renderFeed();
+    });
+
+    document.getElementById('feed-search-input').addEventListener('input', e => {
+        activeQuery = e.target.value.trim().toLowerCase();
         renderFeed();
     });
 
