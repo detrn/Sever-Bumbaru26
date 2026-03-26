@@ -11,143 +11,41 @@
     <script src="https://unpkg.com/lucide@latest"></script>
 
     <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/accesibilitate.css">
+    <link rel="stylesheet" href="js/accesibilitate.js">
+    <link rel="stylesheet" href="js/ButonSpecial.js">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/componente/navbar.css">
     <link rel="stylesheet" href="css/pages/toate-sesizarile.css">
 
     <style>
-        /* ── STILURI FUNCȚIONALE (Adaptate pentru tema luminoasă) ── */
-
-        /* HARTĂ LEAFLET */
-        #map-section {
-            width: 100%;
-            height: 400px;
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 32px;
-            border: 1px solid var(--color-border, #e2e8f0);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            z-index: 1; /* Pentru a nu acoperi dropdown-ul din navbar */
-        }
+        /* ── STILURI EXISTENTE ── */
+        #map-section { width: 100%; height: 400px; border-radius: 16px; overflow: hidden; margin-bottom: 32px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 1; }
         #map-all { width: 100%; height: 100%; z-index: 1; }
+        .thread { margin-top: 16px; border-top: 1px solid #e2e8f0; padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+        .thread-msg { background: #f0fdfa; border-left: 3px solid #0d9488; border-radius: 0 8px 8px 0; padding: 12px 16px; font-size: .85rem; color: #334155; line-height: 1.55; }
+        .thread-msg-meta { font-size: .75rem; color: #64748b; margin-bottom: 6px; display: flex; gap: 10px; align-items: center; }
+        .admin-panel { margin-top: 16px; background: #fffbeb; border: 1px solid #fde68a; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+        .admin-textarea { width: 100%; background: #ffffff; border: 1px solid #cbd5e1; border-radius: 6px; padding: 10px 12px; font-size: .85rem; min-height: 70px; outline: none; }
+        .admin-btns { display: flex; gap: 8px; flex-wrap: wrap; }
+        .admin-btn { font-size: .75rem; padding: 6px 14px; border-radius: 6px; border: 1px solid; cursor: pointer; font-weight: 600; background: transparent; }
 
-        /* THREAD (Răspunsuri Admin) */
-        .thread {
-            margin-top: 16px;
-            border-top: 1px solid #e2e8f0;
-            padding-top: 14px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .thread-msg {
-            background: #f0fdfa;
-            border-left: 3px solid #0d9488;
-            border-radius: 0 8px 8px 0;
-            padding: 12px 16px;
-            font-size: .85rem;
-            color: #334155;
-            line-height: 1.55;
-        }
-        .thread-msg-meta {
-            font-size: .75rem;
-            color: #64748b;
-            margin-bottom: 6px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .thread-msg-meta .status-changed {
-            font-weight: 700;
-            color: #0d9488;
-        }
+        /* ── WIDGET ACCESIBILITATE ── */
+        #a11y-widget { position: fixed; bottom: 20px; left: 20px; z-index: 999999; }
+        #a11y-btn { background: #2563eb; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); display: flex; align-items: center; justify-content: center; }
+        #a11y-panel { position: absolute; bottom: 60px; left: 0; width: 280px; background: white; border: 1px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); padding: 20px; display: none; flex-direction: column; gap: 15px; }
+        #a11y-panel.active { display: flex; }
+        .a11y-title { font-weight: 800; font-size: 0.9rem; text-transform: uppercase; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 5px; color: #1e293b; }
+        .a11y-opt { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; font-weight: 600; color: #475569; cursor: pointer; padding: 8px; border-radius: 6px; transition: background 0.2s; }
+        .a11y-opt:hover { background: #f8fafc; }
 
-        /* ADMIN PANEL */
-        .admin-panel {
-            margin-top: 16px;
-            background: #fffbeb;
-            border: 1px solid #fde68a;
-            border-radius: 10px;
-            padding: 16px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .admin-panel-title {
-            font-size: .75rem;
-            font-weight: 800;
-            color: #d97706;
-            text-transform: uppercase;
-            letter-spacing: .05em;
-        }
-        .admin-textarea {
-            width: 100%;
-            background: #ffffff;
-            border: 1px solid #cbd5e1;
-            border-radius: 6px;
-            padding: 10px 12px;
-            color: #1e293b;
-            font-size: .85rem;
-            font-family: inherit;
-            resize: vertical;
-            min-height: 70px;
-            outline: none;
-            transition: border-color .2s, box-shadow .2s;
-        }
-        .admin-textarea:focus {
-            border-color: #3b82f6;
-            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
-        }
-        .admin-textarea::placeholder { color: #94a3b8; }
-
-        .admin-btns {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-        .admin-btn {
-            font-size: .75rem;
-            padding: 6px 14px;
-            border-radius: 6px;
-            border: 1px solid;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all .2s;
-            background: transparent;
-        }
-        .admin-btn:hover { transform: translateY(-1px); }
-        .admin-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
-        .btn-inlucru  { color: #2563eb; border-color: #bfdbfe; background: #eff6ff; }
-        .btn-rezolvat { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
-        .btn-respins  { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
-        .btn-asteptare{ color: #d97706; border-color: #fde68a; background: #fffbeb; }
-
-        /* BUTOANE FLAG (Raportare Utilizatori) */
-        .flag-bar {
-            margin-top: 16px;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-        .flag-btn {
-            font-size: .75rem;
-            padding: 5px 12px;
-            border-radius: 6px;
-            border: 1px solid #e2e8f0;
-            background: #f8fafc;
-            color: #64748b;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all .2s;
-        }
-        .flag-btn:hover { border-color: #f97316; color: #f97316; background: #ffffff; }
-        .flag-btn.flagged { border-color: #f97316; color: #f97316; background: #fff7ed; }
-        .flag-btn.flagged-nepotrivita { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
-        .flag-count { font-weight: 700; }
+        /* MODURI ACCESIBILITATE */
+        body.a11y-high-contrast { background: #000 !important; color: #fff !important; }
+        body.a11y-high-contrast .navbar, body.a11y-high-contrast .sez-card, body.a11y-high-contrast footer { background: #000 !important; border: 1px solid #fff !important; color: #fff !important; }
+        body.a11y-high-contrast a, body.a11y-high-contrast h1, body.a11y-high-contrast h3 { color: #ffff00 !important; }
+        body.a11y-large-text { font-size: 1.25rem !important; }
+        body.a11y-links-underlined a { text-decoration: underline !important; font-weight: 800 !important; }
     </style>
 </head>
 <body>
@@ -172,11 +70,8 @@
                 </ul>
             </li>
         </ul>
-
         <div style="margin-left: 20px; display: flex; align-items: center;">
-            <div id="nav-user-badge" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:20px; padding:6px 16px; font-size:.8rem; color:#d97706; font-weight:700;">
-                ⚙️ Admin
-            </div>
+            <div id="nav-user-badge" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:20px; padding:6px 16px; font-size:.8rem; color:#d97706; font-weight:700;">⚙️ Admin</div>
         </div>
     </div>
 </nav>
@@ -193,11 +88,7 @@
 </div>
 
 <div class="feed-page container">
-
-    <div id="map-section">
-        <div id="map-all"></div>
-    </div>
-
+    <div id="map-section"><div id="map-all"></div></div>
     <div class="feed-toolbar">
         <div class="feed-filters" id="feed-filters">
             <button class="feed-chip active" data-filter="toate">Toate</button>
@@ -219,59 +110,63 @@
             </select>
         </div>
     </div>
-
-    <div class="feed-stats">
-        <span id="feed-count">Se încarcă...</span>
-        <div class="feed-stats__badges">
-            <span class="status-pill status-nou">Nou</span>
-            <span class="status-pill status-lucru">În lucru</span>
-            <span class="status-pill status-rezolvat">Rezolvat</span>
-        </div>
-    </div>
-
+    <div class="feed-stats"><span id="feed-count">Se încarcă...</span></div>
     <div class="feed-list" id="feed-list"></div>
-
-    <div class="feed-empty" id="feed-empty" hidden>
-        <div class="feed-empty__icon"><i data-lucide="search-x" style="width:48px; height:48px;"></i></div>
-        <p>Nicio sesizare pentru această categorie.</p>
-    </div>
-
+    <div class="feed-empty" id="feed-empty" hidden><p>Nicio sesizare.</p></div>
 </div>
 
-<footer class="footer">
-    <div class="container">
-        <div class="footer__grid">
-            <div>
-                <div class="footer__brand-name">Orașul Tău</div>
-                <p>Administrația Publică Locală<br>Str. Primăriei nr. 1</p>
-            </div>
-            <div>
-                <div class="footer__heading">Navigare</div>
-                <ul class="footer__links">
-                    <li><a href="index.html">Acasă</a></li>
-                    <li><a href="despre.html">Despre</a></li>
-                    <li><a href="toate-sesizarile.html">Sesizări</a></li>
-                </ul>
-            </div>
-            <div>
-                <div class="footer__heading">Contact</div>
-                <ul class="footer__links">
-                    <li><i data-lucide="phone" style="width:16px; height:16px; vertical-align:middle;"></i> 0234 000 000</li>
-                    <li><i data-lucide="mail" style="width:16px; height:16px; vertical-align:middle;"></i> contact@oras.ro</li>
-                </ul>
-            </div>
+<div id="a11y-widget">
+    <button id="a11y-btn" title="Opțiuni Accesibilitate">
+        <i data-lucide="accessibility"></i>
+    </button>
+    <div id="a11y-panel">
+        <div class="a11y-title">Accesibilitate</div>
+        <div class="a11y-opt" onclick="toggleA11y('a11y-high-contrast')">
+            Contrast Ridicat <i data-lucide="circle-dot"></i>
         </div>
-        <div class="footer__bottom">
-            <span>© 2026 Orașul Tău. Toate drepturile rezervate.</span>
-            <span>Realizat cu ❤️ pentru cetățeni</span>
+        <div class="a11y-opt" onclick="toggleA11y('a11y-large-text')">
+            Text Mare <i data-lucide="type"></i>
         </div>
+        <div class="a11y-opt" onclick="toggleA11y('a11y-links-underlined')">
+            Subliniază Link-uri <i data-lucide="link"></i>
+        </div>
+        <button id="a11y-reset" style="margin-top:10px; width:100%; padding:8px; cursor:pointer; background:#eee; border:none; border-radius:4px; font-weight:bold;">Resetează</button>
     </div>
-</footer>
+</div>
+
+<footer class="footer">...</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="js/animations.js" defer></script>
 <script src="js/main.js" defer></script>
+
 <script>
+    // ── LOGICĂ ACCESIBILITATE ──────────────────────────────────
+    const a11yBtn = document.getElementById('a11y-btn');
+    const a11yPanel = document.getElementById('a11y-panel');
+    const a11yReset = document.getElementById('a11y-reset');
+
+    a11yBtn.addEventListener('click', () => a11yPanel.classList.toggle('active'));
+
+    function toggleA11y(className) {
+        document.body.classList.toggle(className);
+        localStorage.setItem(className, document.body.classList.contains(className));
+    }
+
+    a11yReset.addEventListener('click', () => {
+        ['a11y-high-contrast', 'a11y-large-text', 'a11y-links-underlined'].forEach(cls => {
+            document.body.classList.remove(cls);
+            localStorage.removeItem(cls);
+        });
+    });
+
+    // Restaurare preferințe la load
+    window.addEventListener('load', () => {
+        ['a11y-high-contrast', 'a11y-large-text', 'a11y-links-underlined'].forEach(cls => {
+            if(localStorage.getItem(cls) === 'true') document.body.classList.add(cls);
+        });
+        if(typeof lucide !== 'undefined') lucide.createIcons();
+    });
     // ── CONFIGURĂRI & VARIABILE GLOBALE ──────────────────────────────────────
     const CAT_COLORS = {
         'Infrastructură deteriorată': '#f97316',
@@ -462,7 +357,7 @@
             // GENERARE CARD
             return `
         <article class="sez-card" style="border-left-color:${color}" id="card-${id}">
-            <div class="sez-card__avatar" style="background:${color}20; color:${color}">${initials(s.autor)}</div>
+            <div class="sez-card__avatar" style="background:${color}; color:${color}">${initials(s.autor)}</div>
             <div class="sez-card__body">
                 <div class="sez-card__meta">
                     <span class="sez-card__cat" style="color:${color}">
