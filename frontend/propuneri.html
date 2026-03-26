@@ -47,7 +47,7 @@
         <div class="hero__actions" style="margin-top: 30px;">
             <a href="propuneriForum.html" class="btn-forum">
                 <i data-lucide="messages-square" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px;"></i>
-                Vezi propunerile comunității (Forum)
+                Vezi propunerile comunității (forum)
             </a>
         </div>
     </div>
@@ -57,8 +57,8 @@
     <div class="card">
         <div class="toggle-label">Tipul propunerii</div>
         <div class="toggle-wrap">
-            <button class="toggle-btn active" data-tip="oras" type="button">🏙 Propunere pentru oraș</button>
-            <button class="toggle-btn" data-tip="site" type="button">🌐 Propunere pentru site</button>
+            <button class="toggle-btn active" data-tip="oras" type="button">Propunere pentru oraș</button>
+            <button class="toggle-btn" data-tip="site" type="button">Propunere pentru site</button>
         </div>
         <div class="selected-row">
             <div class="selected-dot"></div>
@@ -141,7 +141,7 @@
                 </div>
 
                 <div class="template-box">
-                    <h4><i data-lucide="clipboard-list" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px;"></i>Template orientativ</h4>
+                    <h4><i data-lucide="clipboard-list" style="width: 18px; height: 18px; vertical-align: middle; margin-right: 8px;"></i> Template orientativ</h4>
                     <pre id="template-text">Titlu propunere:
 Problema actuală:
 Zona vizată:
@@ -151,24 +151,25 @@ Observații suplimentare:</pre>
                 </div>
 
                 <div class="actions">
-                    <button type="submit" class="btn-primary"><i data-lucide="send" style="width: 18px; height: 18px; margin-right: 8px;"></i>Trimite propunerea</button>
-                    <button type="reset" class="btn-secondary"><i data-lucide="trash-2" style="width: 18px; height: 18px; margin-right: 8px;"></i>Resetează</button>
+                    <button type="submit" class="btn-primary"><i data-lucide="send" style="width: 18px; height: 18px; margin-right: 8px;"></i> Trimite propunerea</button>
+                    <button type="reset" class="btn-secondary"><i data-lucide="trash-2" style="width: 18px; height: 18px; margin-right: 8px;"></i> Resetează</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
-<div class="accessibility-widget">
+<div class="accessibility-widget" hidden aria-hidden="true">
     <button class="accessibility-btn" id="accessibility-main-btn" title="Opțiuni accesibilitate">
         <i data-lucide="accessibility"></i>
     </button>
     <div class="accessibility-menu" id="accessibility-menu">
-        <button onclick="toggleContrast()">Contrast Ridicat</button>
-        <button onclick="increaseFontSize()">Mărește Textul</button>
+        <button onclick="toggleContrast()">Contrast ridicat</button>
+        <button onclick="increaseFontSize()">Mărește textul</button>
         <button onclick="resetAccessibility()">Resetează</button>
     </div>
 </div>
+
 <footer class="footer">
     <div class="footer__grid">
         <div>
@@ -180,11 +181,11 @@ Observații suplimentare:</pre>
             <div class="footer__heading">Navigare</div>
             <ul class="footer__links">
                 <li><a href="index.html">Acasă</a></li>
-                <li><a href="sesizari.html">Depune Sesizare</a></li>
-                <li><a href="toate-sesizarile.html">Toate Sesizările</a></li>
-                <li><a href="propuneri.html">Propuneri Cetățeni</a></li>
-                <li><a href="propuneriForum.html">Forum Comunitate</a></li>
-                <li><a href="DezvoltareUrbana.html">Dezvoltare Urbană</a></li>
+                <li><a href="sesizari.html">Depune sesizare</a></li>
+                <li><a href="toate-sesizarile.html">Toate sesizările</a></li>
+                <li><a href="propuneri.html">Propuneri cetățeni</a></li>
+                <li><a href="propuneriForum.html">Forum comunitate</a></li>
+                <li><a href="DezvoltareUrbana.html">Dezvoltare urbană</a></li>
             </ul>
         </div>
 
@@ -208,7 +209,8 @@ Observații suplimentare:</pre>
     lucide.createIcons();
 </script>
 <script src="js/functionalitatePagini/propuneri.js"></script>
-<script src="js/accesibilitate.js"></script>
+<script src="js/ButonSpecial.js" defer></script>
+<script src="js/accesibilitate.js" defer></script>
 
 </body>
 </html>

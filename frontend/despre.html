@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages/about.css">
     <link rel="stylesheet" href="css/componente/navbar.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/index-typography.css">
 </head>
 <body>
 <nav class="navbar">
@@ -20,12 +20,10 @@
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
-            <li><a href="DezvoltareUrbana.html"><i data-lucide="building-2"></i> Dezvoltare Urbană</a></li>
-            <li><a href="propuneriForum.html"><i data-lucide="messages-square"></i> Forum</a></li>
+            <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
             <li class="dropdown">
                 <a href="#" id="sesizari-toggle">
-                    <i data-lucide="alert-circle"></i> Sesizări
-                    <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
+                    <i data-lucide="alert-circle"></i> Sesizări <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
                 </a>
                 <ul class="dropdown-menu">
                     <li><a href="sesizari.html"><i data-lucide="edit-3"></i> Depune sesizare</a></li>
@@ -99,16 +97,7 @@
     </div>
 </section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
-        } else {
-            console.error("Libraria Lucide nu a putut fi incarcata. Verifica conexiunea la internet sau link-ul din head.");
-        }
-    });
-</script>
-
+<script src="js/accessibility.js"></script>
 
 </body>
 </html>

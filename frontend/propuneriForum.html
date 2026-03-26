@@ -3,11 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Forum Propuneri | GalațiCity</title>
+  <title>Forum Propuneri | Galați City</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/componente/navbar.css">
   <link rel="stylesheet" href="css/pages/forum.css">
+  <link rel="stylesheet" href="css/accesibilitate.css">
   <link rel="stylesheet" href="css/index-typography.css">
   <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -39,7 +40,7 @@
 
 <header class="feed-hero">
   <div class="container">
-    <span class="feed-hero__label"><i data-lucide="sparkles"></i> Vocea Comunității</span>
+    <span class="feed-hero__label"><i data-lucide="sparkles"></i> Vocea comunității</span>
     <h1 class="feed-hero__title">Forum Propuneri</h1>
     <p class="feed-hero__sub">Votează și dezbate ideile care pot moderniza Galațiul. Cele mai apreciate propuneri sunt analizate prioritar de administrație.</p>
   </div>
@@ -68,14 +69,13 @@
         </div>
 
         <select id="sortBy" onchange="renderForum()" class="feed-sort-select">
-          <option value="votes">↑ Cele mai votate</option>
+          <option value="votes">Cele mai votate</option>
           <option value="newest">Recente</option>
           <option value="oldest">Vechi</option>
         </select>
       </div>
 
-      <div id="feed-list">
-      </div>
+      <div id="feed-list"></div>
     </main>
 
     <aside class="sidebar">
@@ -83,7 +83,7 @@
         <div class="sbox-head"><i data-lucide="pie-chart"></i> Statistici</div>
         <div class="mini-stats">
           <div class="mstat">
-            <span class="mstat-label">Total Propuneri</span>
+            <span class="mstat-label">Total propuneri</span>
             <strong id="stat-total">0</strong>
           </div>
           <div class="mstat">
@@ -94,9 +94,8 @@
       </div>
 
       <div class="sbox">
-        <div class="sbox-head"><i data-lucide="trophy"></i> Top Contribuitori</div>
-        <div id="leaderboard" class="lb-list">
-        </div>
+        <div class="sbox-head"><i data-lucide="trophy"></i> Top contribuitori</div>
+        <div id="leaderboard" class="lb-list"></div>
       </div>
 
       <a href="propuneri.html" class="btn-primary-forum">
@@ -119,11 +118,11 @@
       <div class="footer__heading">Navigare</div>
       <ul class="footer__links">
         <li><a href="index.html">Acasă</a></li>
-        <li><a href="sesizari.html">Depune Sesizare</a></li>
-        <li><a href="toate-sesizarile.html">Toate Sesizările</a></li>
-        <li><a href="propuneri.html">Propuneri Cetățeni</a></li>
-        <li><a href="propuneriForum.html">Forum Comunitate</a></li>
-        <li><a href="DezvoltareUrbana.html">Dezvoltare Urbană</a></li>
+        <li><a href="sesizari.html">Depune sesizare</a></li>
+        <li><a href="toate-sesizarile.html">Toate sesizările</a></li>
+        <li><a href="propuneri.html">Propuneri cetățeni</a></li>
+        <li><a href="propuneriForum.html">Forum comunitate</a></li>
+        <li><a href="DezvoltareUrbana.html">Dezvoltare urbană</a></li>
       </ul>
     </div>
 
@@ -143,6 +142,8 @@
   </div>
 </footer>
 <script src="js/functionalitatePagini/forum.js"></script>
+<script src="js/ButonSpecial.js" defer></script>
+<script src="js/accesibilitate.js" defer></script>
 
 <script>
   lucide.createIcons();
