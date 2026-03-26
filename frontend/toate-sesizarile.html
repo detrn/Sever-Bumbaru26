@@ -4,144 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toate Sesizările — Galați</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+    <script src="https://unpkg.com/lucide@latest"></script>
+
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
-    <link rel="stylesheet" href="css/toate-sesizarile.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="css/componente/navbar.css">
+    <link rel="stylesheet" href="css/pages/toate-sesizarile.css">
+
     <style>
-      /* MAP */
-      #map-section {
-        width:100%; height:400px; border-radius:16px; overflow:hidden;
-        margin-bottom:32px; border:1px solid rgba(255,255,255,0.08);
-        box-shadow:0 4px 24px rgba(0,0,0,0.4);
-      }
-      #map-all { width:100%; height:100%; }
+        /* ── STILURI FUNCȚIONALE (Adaptate pentru tema luminoasă) ── */
 
-      /* THREAD (raspunsuri admin) */
-      .thread {
-        margin-top: 12px;
-        border-top: 1px solid rgba(255,255,255,0.07);
-        padding-top: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .thread-msg {
-        background: rgba(59,130,246,0.08);
-        border-left: 3px solid #3b82f6;
-        border-radius: 0 8px 8px 0;
-        padding: 10px 14px;
-        font-size: .82rem;
-        color: #cbd5e1;
-        line-height: 1.55;
-      }
-      .thread-msg-meta {
-        font-size: .72rem;
-        color: #4b5a72;
-        margin-bottom: 4px;
-        display: flex;
-        gap: 10px;
-        align-items: center;
-      }
-      .thread-msg-meta .status-changed {
-        font-weight: 700;
-        color: #3b82f6;
-      }
+        /* HARTĂ LEAFLET */
+        #map-section {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 32px;
+            border: 1px solid var(--color-border, #e2e8f0);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 1; /* Pentru a nu acoperi dropdown-ul din navbar */
+        }
+        #map-all { width: 100%; height: 100%; z-index: 1; }
 
-      /* ADMIN PANEL */
-      .admin-panel {
-        margin-top: 12px;
-        background: rgba(245,158,11,0.06);
-        border: 1px solid rgba(245,158,11,0.2);
-        border-radius: 10px;
-        padding: 12px 14px;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-      }
-      .admin-panel-title {
-        font-size: .72rem;
-        font-weight: 700;
-        color: #f59e0b;
-        text-transform: uppercase;
-        letter-spacing: .06em;
-        margin-bottom: 2px;
-      }
-      .admin-textarea {
-        width: 100%;
-        background: rgba(0,0,0,0.25);
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 6px;
-        padding: 8px 12px;
-        color: #e2e8f0;
-        font-size: .82rem;
-        font-family: inherit;
-        resize: vertical;
-        min-height: 64px;
-        outline: none;
-        transition: border-color .18s;
-      }
-      .admin-textarea:focus { border-color: #3b82f6; }
-      .admin-textarea::placeholder { color: #4b5a72; }
-      .admin-btns {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .admin-btn {
-        font-size: .75rem; padding: 5px 12px;
-        border-radius: 6px; border: 1px solid;
-        cursor: pointer; font-weight: 600;
-        transition: opacity .15s; background: transparent;
-      }
-      .admin-btn:hover { opacity: .75; }
-      .admin-btn:disabled { opacity: .4; cursor: not-allowed; }
-      .btn-inlucru  { color:#3b82f6; border-color:#3b82f6; background:rgba(59,130,246,0.1); }
-      .btn-rezolvat { color:#10b981; border-color:#10b981; background:rgba(16,185,129,0.1); }
-      .btn-respins  { color:#ef4444; border-color:#ef4444; background:rgba(239,68,68,0.1); }
-      .btn-asteptare{ color:#f59e0b; border-color:#f59e0b; background:rgba(245,158,11,0.1); }
+        /* THREAD (Răspunsuri Admin) */
+        .thread {
+            margin-top: 16px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .thread-msg {
+            background: #f0fdfa;
+            border-left: 3px solid #0d9488;
+            border-radius: 0 8px 8px 0;
+            padding: 12px 16px;
+            font-size: .85rem;
+            color: #334155;
+            line-height: 1.55;
+        }
+        .thread-msg-meta {
+            font-size: .75rem;
+            color: #64748b;
+            margin-bottom: 6px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .thread-msg-meta .status-changed {
+            font-weight: 700;
+            color: #0d9488;
+        }
 
-      /* FLAG BUTTONS (useri normali) */
-      .flag-bar {
-        margin-top: 10px;
-        display: flex;
-        gap: 8px;
-        flex-wrap: wrap;
-        align-items: center;
-      }
-      .flag-btn {
-        font-size: .72rem; padding: 3px 10px;
-        border-radius: 5px; border: 1px solid rgba(255,255,255,0.1);
-        background: transparent; color: #64748b;
-        cursor: pointer; display: flex; align-items: center; gap: 5px;
-        transition: all .15s;
-      }
-      .flag-btn:hover { border-color: #f97316; color: #f97316; }
-      .flag-btn.flagged { border-color: #f97316; color: #f97316; background: rgba(249,115,22,0.1); }
-      .flag-btn.flagged-nepotrivita { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.1); }
-      .flag-count { font-weight: 700; }
+        /* ADMIN PANEL */
+        .admin-panel {
+            margin-top: 16px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .admin-panel-title {
+            font-size: .75rem;
+            font-weight: 800;
+            color: #d97706;
+            text-transform: uppercase;
+            letter-spacing: .05em;
+        }
+        .admin-textarea {
+            width: 100%;
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 10px 12px;
+            color: #1e293b;
+            font-size: .85rem;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 70px;
+            outline: none;
+            transition: border-color .2s, box-shadow .2s;
+        }
+        .admin-textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+        }
+        .admin-textarea::placeholder { color: #94a3b8; }
+
+        .admin-btns {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .admin-btn {
+            font-size: .75rem;
+            padding: 6px 14px;
+            border-radius: 6px;
+            border: 1px solid;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all .2s;
+            background: transparent;
+        }
+        .admin-btn:hover { transform: translateY(-1px); }
+        .admin-btn:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+        .btn-inlucru  { color: #2563eb; border-color: #bfdbfe; background: #eff6ff; }
+        .btn-rezolvat { color: #16a34a; border-color: #bbf7d0; background: #f0fdf4; }
+        .btn-respins  { color: #dc2626; border-color: #fecaca; background: #fef2f2; }
+        .btn-asteptare{ color: #d97706; border-color: #fde68a; background: #fffbeb; }
+
+        /* BUTOANE FLAG (Raportare Utilizatori) */
+        .flag-bar {
+            margin-top: 16px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .flag-btn {
+            font-size: .75rem;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #64748b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all .2s;
+        }
+        .flag-btn:hover { border-color: #f97316; color: #f97316; background: #ffffff; }
+        .flag-btn.flagged { border-color: #f97316; color: #f97316; background: #fff7ed; }
+        .flag-btn.flagged-nepotrivita { border-color: #ef4444; color: #ef4444; background: #fef2f2; }
+        .flag-count { font-weight: 700; }
     </style>
 </head>
 <body>
 
 <nav class="navbar">
     <div class="container navbar__inner">
-        <a href="index.html" class="navbar__logo">Orașul <span>Tău</span></a>
+        <a href="index.html" class="navbar__logo">
+            <img src="assets/logo.png" alt="Logo Galați" class="navbar__logo-img">
+            <div class="navbar__logo-text">Orașul <span>Tău</span></div>
+        </a>
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
-            <li><a href="sesizari.html" class="active"><i data-lucide="alert-circle"></i> Sesizări</a></li>
+            <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
+            <li class="dropdown">
+                <a href="#" id="sesizari-toggle" class="active">
+                    <i data-lucide="alert-circle"></i> Sesizări <i data-lucide="chevron-down" class="chevron-down" style="width:14px; transition: transform 0.3s;"></i>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="sesizari.html"><i data-lucide="edit-3"></i> Depune sesizare</a></li>
+                    <li><a href="toate-sesizarile.html"><i data-lucide="list"></i> Toate sesizările</a></li>
+                </ul>
+            </li>
         </ul>
-        <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-          <div id="nav-user-badge" style="display:none;
-            background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.3);
-            border-radius:20px; padding:4px 14px; font-size:.78rem; color:#f59e0b;font-weight:600">
-            ⚙️ Admin
-          </div>
+
+        <div style="margin-left: 20px; display: flex; align-items: center;">
+            <div id="nav-user-badge" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:20px; padding:6px 16px; font-size:.8rem; color:#d97706; font-weight:700;">
+                ⚙️ Admin
+            </div>
         </div>
     </div>
 </nav>
@@ -152,7 +187,7 @@
         <h1 class="feed-hero__title">Sesizările cetățenilor</h1>
         <p class="feed-hero__sub">Toate problemele raportate de cetățenii din Galați, în timp real.</p>
         <a href="sesizari.html" class="btn btn-primary btn-lg feed-hero__cta">
-            <i data-lucide="plus-circle" style="margin-right:8px;"></i> Depune o sesizare
+            <i data-lucide="plus-circle" style="margin-right: 8px;"></i> Depune o sesizare
         </a>
     </div>
 </div>
@@ -175,9 +210,7 @@
             <button class="feed-chip" data-filter="Altele"><span class="chip-dot" style="background:#94a3b8"></span>Altele</button>
         </div>
         <div class="feed-sort">
-            <label for="sort-select" class="feed-sort__label">
-                <i data-lucide="filter" style="width:14px;height:14px;vertical-align:middle;"></i> Sortează:
-            </label>
+            <label for="sort-select" class="feed-sort__label"><i data-lucide="filter" style="width:14px; height:14px; vertical-align:middle;"></i> Sortează:</label>
             <select id="sort-select" class="feed-sort__select">
                 <option value="data-desc">Cele mai recente</option>
                 <option value="data-asc">Cele mai vechi</option>
@@ -197,10 +230,12 @@
     </div>
 
     <div class="feed-list" id="feed-list"></div>
+
     <div class="feed-empty" id="feed-empty" hidden>
-        <div class="feed-empty__icon"><i data-lucide="search-x" style="width:48px;height:48px;"></i></div>
+        <div class="feed-empty__icon"><i data-lucide="search-x" style="width:48px; height:48px;"></i></div>
         <p>Nicio sesizare pentru această categorie.</p>
     </div>
+
 </div>
 
 <footer class="footer">
@@ -221,8 +256,8 @@
             <div>
                 <div class="footer__heading">Contact</div>
                 <ul class="footer__links">
-                    <li><i data-lucide="phone" style="width:16px;height:16px;vertical-align:middle;"></i> 0234 000 000</li>
-                    <li><i data-lucide="mail" style="width:16px;height:16px;vertical-align:middle;"></i> contact@oras.ro</li>
+                    <li><i data-lucide="phone" style="width:16px; height:16px; vertical-align:middle;"></i> 0234 000 000</li>
+                    <li><i data-lucide="mail" style="width:16px; height:16px; vertical-align:middle;"></i> contact@oras.ro</li>
                 </ul>
             </div>
         </div>
@@ -237,142 +272,154 @@
 <script src="js/animations.js" defer></script>
 <script src="js/main.js" defer></script>
 <script>
-// ── HELPERS ──────────────────────────────────────────────
-const CAT_COLORS = {
-    'Infrastructură deteriorată': '#f97316',
-    'Iluminat stradal':           '#eab308',
-    'Gunoi / Salubritate':        '#22c55e',
-    'Spații verzi':               '#10b981',
-    'Transport public':           '#3b82f6',
-    'Siguranță rutieră':          '#e53e3e',
-    'Altele':                     '#94a3b8',
-};
-const PRIO_ORDER   = { 'Urgentă':0,'Ridicată':1,'Medie':2,'Scăzută':3 };
-const STATUS_ORDER = { 'in lucru':0,'in asteptare':1,'rezolvata':2,'respinsa':3 };
-
-let SESIZARI     = [];
-let activeFilter = 'toate';
-let activeSort   = 'data-desc';
-let mapMarkers   = [];
-
-// Utilizatorul curent
-let currentUser = null;
-try { currentUser = JSON.parse(localStorage.getItem('user')); } catch(e){}
-const isAdmin = currentUser?.rol === 'admin';
-
-// Flags salvate local (pentru a ști ce a votat userul curent)
-let myFlags = JSON.parse(localStorage.getItem('myFlags') || '{}');
-
-// Arată badge admin în navbar
-if (isAdmin) {
-    document.getElementById('nav-user-badge').style.display = 'block';
-}
-
-// ── NORMALIZARE SCHEMA ────────────────────────────────────
-function normalize(s) {
-    const autorVechi = [s.prenume, s.nume].filter(Boolean).join(' ');
-    const nivelToText = n => n >= 3 ? 'Urgentă' : n === 2 ? 'Medie' : 'Scăzută';
-    return {
-        _id:        s._id?.$oid || s._id,
-        titlu:      s.titlu      || s.sesizare         || '(fără titlu)',
-        descriere:  s.descriere  || s.sesizare         || '—',
-        categorie:  s.categorie  || s.criteriuSesizare || 'Altele',
-        autor:      s.autor      || autorVechi         || 'Anonim',
-        prioritate: s.prioritate || nivelToText(s.nivelUrgenta || 1),
-        status:     s.status     || 'in asteptare',
-        lat:        s.lat        || null,
-        lng:        s.lng        || null,
-        dataCreare: s.dataCreare || s.data             || null,
-        numarVoturi: s.numarVoturi || 0,
-        raspunsuri:  s.raspunsuri  || [],
-        flags:       s.flags       || { redundanta: 0, nepotrivita: 0 },
+    // ── CONFIGURĂRI & VARIABILE GLOBALE ──────────────────────────────────────
+    const CAT_COLORS = {
+        'Infrastructură deteriorată': '#f97316',
+        'Iluminat stradal':           '#eab308',
+        'Gunoi / Salubritate':        '#22c55e',
+        'Spații verzi':               '#10b981',
+        'Transport public':           '#3b82f6',
+        'Siguranță rutieră':          '#e53e3e',
+        'Altele':                     '#94a3b8',
     };
-}
+    const PRIO_ORDER   = { 'Urgentă': 0, 'Ridicată': 1, 'Medie': 2, 'Scăzută': 3 };
+    const STATUS_ORDER = { 'in lucru': 0, 'in asteptare': 1, 'rezolvata': 2, 'respinsa': 3 };
 
-// ── HARTĂ ─────────────────────────────────────────────────
-const map = L.map('map-all', { center:[45.4353,28.0507], zoom:13, minZoom:11 });
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap', maxZoom:19,
-}).addTo(map);
-setTimeout(() => map.invalidateSize(), 200);
+    let SESIZARI     = [];
+    let activeFilter = 'toate';
+    let activeSort   = 'data-desc';
+    let mapMarkers   = [];
 
-function makeIcon(color) {
-    return L.divIcon({
-        className:'',
-        html:`<svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 32 40">
+    // VERIFICARE ROL UTILIZATOR
+    let currentUser = null;
+    try { currentUser = JSON.parse(localStorage.getItem('user')); } catch(e){}
+    const isAdmin = currentUser?.rol === 'admin';
+
+    let myFlags = JSON.parse(localStorage.getItem('myFlags') || '{}');
+
+    if (isAdmin) {
+        document.getElementById('nav-user-badge').style.display = 'block';
+    }
+
+    // ── NORMALIZARE DATE (Adaptare Backend) ───────────────────────────────────
+    function normalize(s) {
+        const autorVechi = [s.prenume, s.nume].filter(Boolean).join(' ');
+        const nivelToText = n => n >= 3 ? 'Urgentă' : n === 2 ? 'Medie' : 'Scăzută';
+        return {
+            _id:        s._id?.$oid || s._id,
+            titlu:      s.titlu      || s.sesizare         || '(fără titlu)',
+            descriere:  s.descriere  || s.sesizare         || '—',
+            categorie:  s.categorie  || s.criteriuSesizare || 'Altele',
+            autor:      s.autor      || autorVechi         || 'Anonim',
+            prioritate: s.prioritate || nivelToText(s.nivelUrgenta || 1),
+            status:     s.status     || 'in asteptare',
+            lat:        s.lat        || null,
+            lng:        s.lng        || null,
+            dataCreare: s.dataCreare || s.data             || null,
+            numarVoturi: s.numarVoturi || 0,
+            raspunsuri:  s.raspunsuri  || [],
+            flags:       s.flags       || { redundanta: 0, nepotrivita: 0 },
+            zona:       s.zona || 'Galați'
+        };
+    }
+
+    // ── HARTĂ LEAFLET ─────────────────────────────────────────────────────────
+    const map = L.map('map-all', { center:[45.4353,28.0507], zoom:13, minZoom:11 });
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
+
+    // Fix render hartă când e într-un container ascuns/încărcat târziu
+    setTimeout(() => map.invalidateSize(), 300);
+
+    function makeIcon(color) {
+        return L.divIcon({
+            className:'',
+            html:`<svg xmlns="http://www.w3.org/2000/svg" width="26" height="32" viewBox="0 0 32 40">
             <path d="M16 0C7.16 0 0 7.16 0 16c0 10.76 14.24 23.28 15.25 24.19a1 1 0 0 0 1.5 0C17.76 39.28 32 26.76 32 16 32 7.16 24.84 0 16 0z" fill="${color}"/>
             <circle cx="16" cy="16" r="6" fill="#fff"/>
         </svg>`,
-        iconSize:[26,32], iconAnchor:[13,32], popupAnchor:[0,-34],
-    });
-}
-function renderMapMarkers(list) {
-    mapMarkers.forEach(m => map.removeLayer(m));
-    mapMarkers = [];
-    list.forEach(s => {
-        if (!s.lat || !s.lng) return;
-        const color = CAT_COLORS[s.categorie] || '#94a3b8';
-        const m = L.marker([s.lat, s.lng], { icon: makeIcon(color) })
-            .bindPopup(`<strong>${s.titlu}</strong><br>
-                <span style="font-size:.82em;color:#64748b">${s.categorie}</span>`)
-            .addTo(map);
-        mapMarkers.push(m);
-    });
-    if (mapMarkers.length > 0)
-        map.fitBounds(L.featureGroup(mapMarkers).getBounds().pad(0.15));
-}
-
-// ── FETCH ─────────────────────────────────────────────────
-async function loadSesizari() {
-    try {
-        const res = await fetch('/api/reports');
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        SESIZARI = (await res.json()).map(normalize);
-        renderFeed();
-        renderMapMarkers(SESIZARI);
-    } catch(err) {
-        document.getElementById('feed-count').textContent = '⚠ Eroare: ' + err.message;
+            iconSize:[26,32], iconAnchor:[13,32], popupAnchor:[0,-34],
+        });
     }
-}
 
-// ── RENDER FEED ───────────────────────────────────────────
-function formatDate(iso) {
-    if (!iso) return '—';
-    try { return new Date(iso).toLocaleDateString('ro-RO',{day:'numeric',month:'long',year:'numeric'}); }
-    catch { return '—'; }
-}
-function initials(name) {
-    if (!name) return '?';
-    return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
-}
+    function renderMapMarkers(list) {
+        mapMarkers.forEach(m => map.removeLayer(m));
+        mapMarkers = [];
+        list.forEach(s => {
+            if (!s.lat || !s.lng) return;
+            const color = CAT_COLORS[s.categorie] || '#94a3b8';
+            const m = L.marker([s.lat, s.lng], { icon: makeIcon(color) })
+                .bindPopup(`<strong>${s.titlu}</strong><br><span style="font-size:.82em;color:#64748b">${s.categorie}</span>`)
+                .addTo(map);
+            mapMarkers.push(m);
+        });
+        if (mapMarkers.length > 0) {
+            map.fitBounds(L.featureGroup(mapMarkers).getBounds().pad(0.15));
+        }
+    }
 
-function renderFeed() {
-    let list = SESIZARI.filter(s => activeFilter === 'toate' || s.categorie === activeFilter);
-    if (activeSort === 'data-desc')  list.sort((a,b)=>new Date(b.dataCreare||0)-new Date(a.dataCreare||0));
-    if (activeSort === 'data-asc')   list.sort((a,b)=>new Date(a.dataCreare||0)-new Date(b.dataCreare||0));
-    if (activeSort === 'prioritate') list.sort((a,b)=>(PRIO_ORDER[a.prioritate]||99)-(PRIO_ORDER[b.prioritate]||99));
-    if (activeSort === 'status')     list.sort((a,b)=>(STATUS_ORDER[a.status]||99)-(STATUS_ORDER[b.status]||99));
+    // ── PRELUARE DATE (FETCH API) ─────────────────────────────────────────────
+    async function loadSesizari() {
+        try {
+            const res = await fetch('/api/reports');
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json();
+            SESIZARI = data.map(normalize);
+            renderFeed();
+        } catch(err) {
+            console.error("Eroare la preluarea datelor, folosim un fallback pentru design...", err);
+            document.getElementById('feed-count').textContent = '⚠ Conexiune API eșuată';
+            // Opțional: Aici poți reintroduce array-ul tău static dacă serverul e picat
+        }
+    }
 
-    const container = document.getElementById('feed-list');
-    const empty     = document.getElementById('feed-empty');
-    const countEl   = document.getElementById('feed-count');
-    countEl.textContent = `${list.length} sesizări`;
-    renderMapMarkers(list);
+    // ── AFIȘARE LISTĂ (RENDER) ────────────────────────────────────────────────
+    function formatDate(iso) {
+        if (!iso) return '—';
+        try { return new Date(iso).toLocaleDateString('ro-RO',{day:'numeric',month:'long',year:'numeric'}); }
+        catch { return '—'; }
+    }
 
-    if (!list.length) { container.innerHTML=''; empty.hidden=false; lucide.createIcons(); return; }
-    empty.hidden = true;
+    function initials(name) {
+        if (!name) return '?';
+        return name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+    }
 
-    container.innerHTML = list.map(s => {
-        const color    = CAT_COLORS[s.categorie] || '#94a3b8';
-        const rawSt    = (s.status||'').toLowerCase();
-        const statusCls= rawSt==='rezolvata' ? 'status-rezolvat' : rawSt==='in lucru' ? 'status-lucru' : 'status-nou';
-        const statusLbl= rawSt==='rezolvata' ? 'Rezolvat' : rawSt==='in lucru' ? 'În lucru' : rawSt==='respinsa' ? 'Respinsă' : 'Nou';
-        const prioCls  = s.prioritate==='Urgentă'?'prio-urgenta':s.prioritate==='Ridicată'?'prio-ridicata':s.prioritate==='Medie'?'prio-medie':'prio-scazuta';
-        const locLbl   = (s.lat&&s.lng) ? `${parseFloat(s.lat).toFixed(4)}, ${parseFloat(s.lng).toFixed(4)}` : 'Fără coordonate';
-        const id       = s._id;
+    function renderFeed() {
+        let list = SESIZARI.filter(s => activeFilter === 'toate' || s.categorie === activeFilter);
 
-        // Thread raspunsuri admin
-        const threadHTML = s.raspunsuri.length ? `
+        // Sortare
+        if (activeSort === 'data-desc')  list.sort((a,b)=>new Date(b.dataCreare||0)-new Date(a.dataCreare||0));
+        if (activeSort === 'data-asc')   list.sort((a,b)=>new Date(a.dataCreare||0)-new Date(b.dataCreare||0));
+        if (activeSort === 'prioritate') list.sort((a,b)=>(PRIO_ORDER[a.prioritate]||99)-(PRIO_ORDER[b.prioritate]||99));
+        if (activeSort === 'status')     list.sort((a,b)=>(STATUS_ORDER[a.status]||99)-(STATUS_ORDER[b.status]||99));
+
+        const container = document.getElementById('feed-list');
+        const empty     = document.getElementById('feed-empty');
+        const countEl   = document.getElementById('feed-count');
+
+        countEl.textContent = `${list.length} sesizare${list.length !== 1 ? 'i' : ''}`;
+        renderMapMarkers(list);
+
+        if (!list.length) {
+            container.innerHTML='';
+            empty.hidden=false;
+            lucide.createIcons();
+            return;
+        }
+        empty.hidden = true;
+
+        container.innerHTML = list.map(s => {
+            const color      = CAT_COLORS[s.categorie] || '#94a3b8';
+            const rawSt      = (s.status||'').toLowerCase();
+            const statusCls  = rawSt==='rezolvata' ? 'status-rezolvat' : rawSt==='in lucru' ? 'status-lucru' : 'status-nou';
+            const statusLbl  = rawSt==='rezolvata' ? 'Rezolvat' : rawSt==='in lucru' ? 'În lucru' : rawSt==='respinsa' ? 'Respinsă' : 'Nou';
+            const prioCls    = s.prioritate==='Urgentă'?'prio-urgenta':s.prioritate==='Ridicată'?'prio-ridicata':s.prioritate==='Medie'?'prio-medie':'prio-scazuta';
+            const id         = s._id;
+
+            // THREAD ADMIN HTML
+            const threadHTML = s.raspunsuri.length ? `
         <div class="thread">
             ${s.raspunsuri.map(r => `
             <div class="thread-msg">
@@ -385,153 +432,145 @@ function renderFeed() {
             </div>`).join('')}
         </div>` : '';
 
-        // Panou admin
-        const adminHTML = isAdmin ? `
+            // ADMIN PANEL HTML
+            const adminHTML = isAdmin ? `
         <div class="admin-panel">
-            <div class="admin-panel-title">⚙️ Panou Admin — schimbă status</div>
-            <textarea class="admin-textarea" id="msg-${id}"
-                placeholder="Scrie un mesaj de justificare (obligatoriu)..."></textarea>
+            <div class="admin-panel-title">⚙️ Panou Admin — Schimbă Status</div>
+            <textarea class="admin-textarea" id="msg-${id}" placeholder="Scrie un mesaj de justificare (obligatoriu)..."></textarea>
             <div class="admin-btns">
-                <button class="admin-btn btn-inlucru"
-                    onclick="schimbaStatus('${id}','in lucru',this)">🔧 În lucru</button>
-                <button class="admin-btn btn-rezolvat"
-                    onclick="schimbaStatus('${id}','rezolvata',this)">✅ Rezolvat</button>
-                <button class="admin-btn btn-respins"
-                    onclick="schimbaStatus('${id}','respinsa',this)">❌ Respinge</button>
-                <button class="admin-btn btn-asteptare"
-                    onclick="schimbaStatus('${id}','in asteptare',this)">⏳ Resetează</button>
+                <button class="admin-btn btn-inlucru" onclick="schimbaStatus('${id}','in lucru',this)">🔧 În lucru</button>
+                <button class="admin-btn btn-rezolvat" onclick="schimbaStatus('${id}','rezolvata',this)">✅ Rezolvat</button>
+                <button class="admin-btn btn-respins" onclick="schimbaStatus('${id}','respinsa',this)">❌ Respinge</button>
+                <button class="admin-btn btn-asteptare" onclick="schimbaStatus('${id}','in asteptare',this)">⏳ Resetează</button>
             </div>
         </div>` : '';
 
-        // Butoane flag (useri normali)
-        const alreadyFlaggedR = myFlags[id] === 'redundanta';
-        const alreadyFlaggedN = myFlags[id] === 'nepotrivita';
-        const flagHTML = !isAdmin ? `
+            // FLAG BUTTONS HTML
+            const alreadyFlaggedR = myFlags[id] === 'redundanta';
+            const alreadyFlaggedN = myFlags[id] === 'nepotrivita';
+            const flagHTML = !isAdmin ? `
         <div class="flag-bar">
-            <span style="font-size:.7rem;color:#4b5a72">Raportează:</span>
-            <button class="flag-btn ${alreadyFlaggedR ? 'flagged' : ''}"
-                onclick="flagSesizare('${id}','redundanta',this)">
+            <span style="font-size:.75rem; color:#94a3b8">Raportează:</span>
+            <button class="flag-btn ${alreadyFlaggedR ? 'flagged' : ''}" onclick="flagSesizare('${id}','redundanta',this)">
                 ♻️ Redundantă <span class="flag-count">${s.flags.redundanta||0}</span>
             </button>
-            <button class="flag-btn ${alreadyFlaggedN ? 'flagged-nepotrivita' : ''}"
-                onclick="flagSesizare('${id}','nepotrivita',this)">
+            <button class="flag-btn ${alreadyFlaggedN ? 'flagged-nepotrivita' : ''}" onclick="flagSesizare('${id}','nepotrivita',this)">
                 ⚠️ Nepotrivită <span class="flag-count">${s.flags.nepotrivita||0}</span>
             </button>
         </div>` : '';
 
-        return `
+            // GENERARE CARD
+            return `
         <article class="sez-card" style="border-left-color:${color}" id="card-${id}">
-            <div class="sez-card__avatar" style="background:${color}20;color:${color}">${initials(s.autor)}</div>
+            <div class="sez-card__avatar" style="background:${color}20; color:${color}">${initials(s.autor)}</div>
             <div class="sez-card__body">
                 <div class="sez-card__meta">
                     <span class="sez-card__cat" style="color:${color}">
                         <span class="chip-dot" style="background:${color}"></span>${s.categorie}
                     </span>
-                    <span class="sez-card__zona">
-                        <i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${locLbl}
-                    </span>
-                    <span class="sez-card__date">
-                        <i data-lucide="calendar" style="width:12px;height:12px;"></i> ${formatDate(s.dataCreare)}
-                    </span>
+                    <span class="sez-card__zona"><i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${s.zona}</span>
+                    <span class="sez-card__date"><i data-lucide="calendar" style="width:12px;height:12px;"></i> ${formatDate(s.dataCreare)}</span>
                 </div>
                 <h3 class="sez-card__titlu">${s.titlu}</h3>
                 <p class="sez-card__desc">${s.descriere}</p>
                 <div class="sez-card__footer">
                     <span class="status-pill ${statusCls}">${statusLbl}</span>
                     <span class="prio-badge ${prioCls}">${s.prioritate}</span>
-                    <span class="sez-card__autor">
-                        <i data-lucide="user" style="width:12px;height:12px;"></i> de ${s.autor}
-                    </span>
+                    <span class="sez-card__autor"><i data-lucide="user" style="width:12px;height:12px;"></i> de ${s.autor}</span>
                 </div>
                 ${threadHTML}
                 ${flagHTML}
                 ${adminHTML}
             </div>
         </article>`;
-    }).join('');
+        }).join('');
 
-    lucide.createIcons();
-}
-
-// ── ADMIN: SCHIMBĂ STATUS ─────────────────────────────────
-async function schimbaStatus(id, status, btn) {
-    const mesaj = document.getElementById('msg-' + id)?.value?.trim();
-    if (!mesaj) {
-        alert('⚠ Trebuie să scrii un mesaj de justificare înainte de a schimba statusul.');
-        document.getElementById('msg-' + id)?.focus();
-        return;
+        lucide.createIcons();
     }
-    btn.disabled = true;
-    btn.textContent = '...';
-    try {
-        const res  = await fetch(`/api/reports/${id}/status`, {
-            method:  'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({
-                status,
-                mesaj,
-                adminNume:  currentUser?.nume  || 'Admin',
-                adminEmail: currentUser?.email || '',
-            }),
-        });
-        const data = await res.json();
-        if (data.succes) {
-            await loadSesizari();
-        } else {
-            alert('Eroare: ' + (data.mesaj || 'Necunoscută'));
-            btn.disabled = false;
-            btn.textContent = status;
+
+    // ── FUNCȚII INTERACTIVE (ADMIN & UTILIZATORI) ─────────────────────────────
+    async function schimbaStatus(id, status, btn) {
+        const mesaj = document.getElementById('msg-' + id)?.value?.trim();
+        if (!mesaj) {
+            alert('⚠ Trebuie să scrii un mesaj de justificare înainte de a schimba statusul.');
+            document.getElementById('msg-' + id)?.focus();
+            return;
         }
-    } catch(err) {
-        alert('Eroare de rețea: ' + err.message);
-        btn.disabled = false;
-    }
-}
 
-// ── USER: FLAG ────────────────────────────────────────────
-async function flagSesizare(id, tip, btn) {
-    if (myFlags[id]) {
-        alert('Ai raportat deja această sesizare.');
-        return;
+        btn.disabled = true;
+        const btnText = btn.textContent;
+        btn.textContent = '...';
+
+        try {
+            const res = await fetch(`/api/reports/${id}/status`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    status,
+                    mesaj,
+                    adminNume: currentUser?.nume || 'Admin',
+                    adminEmail: currentUser?.email || '',
+                }),
+            });
+            const data = await res.json();
+            if (data.succes) {
+                await loadSesizari(); // Reîncărcăm feed-ul
+            } else {
+                alert('Eroare: ' + (data.mesaj || 'Necunoscută'));
+                btn.disabled = false;
+                btn.textContent = btnText;
+            }
+        } catch(err) {
+            alert('Eroare de rețea: ' + err.message);
+            btn.disabled = false;
+            btn.textContent = btnText;
+        }
     }
-    btn.disabled = true;
-    try {
-        const res  = await fetch(`/api/reports/${id}/flag`, {
-            method:  'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ tip }),
-        });
-        const data = await res.json();
-        if (data.succes) {
-            myFlags[id] = tip;
-            localStorage.setItem('myFlags', JSON.stringify(myFlags));
-            await loadSesizari();
-        } else {
+
+    async function flagSesizare(id, tip, btn) {
+        if (myFlags[id]) {
+            alert('Ai raportat deja această sesizare.');
+            return;
+        }
+        btn.disabled = true;
+        try {
+            const res = await fetch(`/api/reports/${id}/flag`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ tip }),
+            });
+            const data = await res.json();
+            if (data.succes) {
+                myFlags[id] = tip;
+                localStorage.setItem('myFlags', JSON.stringify(myFlags));
+                await loadSesizari();
+            } else {
+                btn.disabled = false;
+            }
+        } catch(err) {
             btn.disabled = false;
         }
-    } catch(err) {
-        btn.disabled = false;
     }
-}
 
-// ── FILTRE / SORT ─────────────────────────────────────────
-document.getElementById('feed-filters').addEventListener('click', e => {
-    const chip = e.target.closest('.feed-chip');
-    if (!chip) return;
-    activeFilter = chip.dataset.filter;
-    document.querySelectorAll('.feed-chip').forEach(c =>
-        c.classList.toggle('active', c.dataset.filter === activeFilter));
-    renderFeed();
-});
-document.getElementById('sort-select').addEventListener('change', e => {
-    activeSort = e.target.value;
-    renderFeed();
-});
+    // ── EVENIMENTE UI ─────────────────────────────────────────────────────────
+    document.getElementById('feed-filters').addEventListener('click', e => {
+        const chip = e.target.closest('.feed-chip');
+        if (!chip) return;
+        activeFilter = chip.dataset.filter;
+        document.querySelectorAll('.feed-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === activeFilter));
+        renderFeed();
+    });
 
-window.addEventListener('DOMContentLoaded', () => {
-    lucide.createIcons();
-    loadSesizari();
-});
+    document.getElementById('sort-select').addEventListener('change', e => {
+        activeSort = e.target.value;
+        renderFeed();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        loadSesizari(); // Declanșăm chemarea către server
+    });
 </script>
+
 </body>
 </html>
