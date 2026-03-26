@@ -12,12 +12,11 @@
 
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/accesibilitate.css">
-    <link rel="stylesheet" href="js/accesibilitate.js">
-    <link rel="stylesheet" href="js/ButonSpecial.js">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/componente/navbar.css">
     <link rel="stylesheet" href="css/pages/toate-sesizarile.css">
+    <link rel="stylesheet" href="css/index-typography.css">
 
     <style>
         /* ── STILURI EXISTENTE ── */
@@ -59,6 +58,7 @@
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
+            <li><a href="DezvoltareUrbana.html"><i data-lucide="building-2"></i> Dezvoltare Urbană</a></li>
             <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
             <li class="dropdown">
                 <a href="#" id="sesizari-toggle" class="active">
@@ -138,7 +138,40 @@
     </div>
 </div>
 
-<footer class="footer">...</footer>
+<footer class="footer">
+    <div class="footer__grid">
+        <div>
+            <div class="footer__brand-name">Orașul Tău</div>
+            <p>Administrația Publică Locală<br>Str. Primăriei nr. 1, Galați</p>
+        </div>
+
+        <div>
+            <div class="footer__heading">Navigare</div>
+            <ul class="footer__links">
+                <li><a href="index.html">Acasă</a></li>
+                <li><a href="sesizari.html">Depune Sesizare</a></li>
+                <li><a href="toate-sesizarile.html">Toate Sesizările</a></li>
+                <li><a href="propuneri.html">Propuneri Cetățeni</a></li>
+                <li><a href="propuneriForum.html">Forum Comunitate</a></li>
+                <li><a href="DezvoltareUrbana.html">Dezvoltare Urbană</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="footer__heading">Contact</div>
+            <ul class="footer__links">
+                <li><i data-lucide="phone"></i> 0236 000 000</li>
+                <li><i data-lucide="mail"></i> contact@orasultau.ro</li>
+                <li><i data-lucide="map-pin"></i> Galați, România</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <span>© 2026 Orașul Tău. Toate drepturile rezervate.</span>
+        <span>Realizat cu ❤️ pentru cetățeni</span>
+    </div>
+</footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="js/animations.js" defer></script>

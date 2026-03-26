@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sesizări — Galați</title>
+    <title>Sesizări - Galați</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
-
     <link rel="stylesheet" href="css/pages/sesizari.css">
     <link rel="stylesheet" href="css/componente/navbar.css">
     <link rel="stylesheet" href="css/accesibilitate.css">
+    <link rel="stylesheet" href="css/index-typography.css">
 
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
@@ -27,6 +27,7 @@
         <ul class="navbar__links">
             <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
             <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
+            <li><a href="DezvoltareUrbana.html"><i data-lucide="building-2"></i> Dezvoltare Urbană</a></li>
             <li><a href="propuneri.html"><i data-lucide="messages-square"></i> Propuneri</a></li>
             <li class="dropdown">
                 <a href="#" id="sesizari-toggle">
@@ -53,8 +54,8 @@
     <div class="card">
         <div class="toggle-label">Tipul sesizării</div>
         <div class="toggle-wrap">
-            <button class="toggle-btn active" data-tip="urgenta" type="button">🚨 Sesizare urgentă</button>
-            <button class="toggle-btn" data-tip="obisnuita" type="button">📝 Sesizare obișnuită</button>
+            <button class="toggle-btn active" data-tip="urgenta" type="button">Sesizare urgentă</button>
+            <button class="toggle-btn" data-tip="obisnuita" type="button">Sesizare obișnuită</button>
         </div>
         <div class="selected-row" id="selected-row">
             <div class="selected-dot"></div>
@@ -65,7 +66,7 @@
     <div class="card">
         <div class="form-header">
             <h2 id="form-title">Completează sesizarea</h2>
-            <p class="form-subtitle" id="form-subtitle">Sesizările urgente sunt prioritizate și procesate primul.</p>
+            <p class="form-subtitle" id="form-subtitle">Sesizările urgente sunt prioritizate și procesate primele.</p>
         </div>
 
         <form id="sesizari-form">
@@ -86,7 +87,7 @@
                 <div class="field">
                     <label for="prioritate">Prioritate</label>
                     <select id="prioritate" name="prioritate">
-                        <option id="opt-urgenta">Urgentă — necesită intervenție imediată</option>
+                        <option>Urgentă - necesită intervenție imediată</option>
                         <option>Ridicată</option>
                         <option>Medie</option>
                         <option>Scăzută</option>
@@ -102,6 +103,44 @@
                         Apasă pe hartă pentru a marca locul problemei.
                     </div>
 
+                    <div class="map-controls">
+                        <div class="map-filters" id="map-filters">
+                            <button type="button" class="filter-chip active" data-cat="toate">
+                                <span class="chip-dot" style="background:#0f172a;"></span>
+                                Toate
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Infrastructura deteriorata">
+                                <span class="chip-dot" style="background:#f97316;"></span>
+                                Infrastructură
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Iluminat stradal">
+                                <span class="chip-dot" style="background:#eab308;"></span>
+                                Iluminat
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Gunoi / Salubritate">
+                                <span class="chip-dot" style="background:#22c55e;"></span>
+                                Salubritate
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Spatii verzi">
+                                <span class="chip-dot" style="background:#10b981;"></span>
+                                Spații verzi
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Transport public">
+                                <span class="chip-dot" style="background:#3b82f6;"></span>
+                                Transport
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Siguranta rutiera">
+                                <span class="chip-dot" style="background:#e53e3e;"></span>
+                                Siguranță
+                            </button>
+                            <button type="button" class="filter-chip" data-cat="Altele">
+                                <span class="chip-dot" style="background:#94a3b8;"></span>
+                                Altele
+                            </button>
+                        </div>
+                        <button type="button" class="btn-hide-all" id="btn-hide-all">Ascunde tot</button>
+                    </div>
+
                     <div class="map-wrapper">
                         <div id="map"></div>
                     </div>
@@ -109,7 +148,10 @@
                     <div class="location-info" id="location-info" hidden>
                         <div class="location-dot"></div>
                         <span id="location-text">Locație neselectată</span>
-                        <button type="button" class="location-clear" id="location-clear">✕</button>
+                        <button type="button" class="location-clear" id="location-clear">X</button>
+                    </div>
+                    <div class="location-placeholder" id="location-placeholder">
+                        Nicio locație selectată încă.
                     </div>
                 </div>
 
@@ -135,15 +177,49 @@
     </div>
 </div>
 
+<footer class="footer">
+    <div class="footer__grid">
+        <div>
+            <div class="footer__brand-name">Orașul Tău</div>
+            <p>Administrația Publică Locală<br>Str. Primăriei nr. 1, Galați</p>
+        </div>
+
+        <div>
+            <div class="footer__heading">Navigare</div>
+            <ul class="footer__links">
+                <li><a href="index.html">Acasă</a></li>
+                <li><a href="sesizari.html">Depune sesizare</a></li>
+                <li><a href="toate-sesizarile.html">Toate sesizările</a></li>
+                <li><a href="propuneri.html">Propuneri cetățeni</a></li>
+                <li><a href="propuneriForum.html">Forum comunitate</a></li>
+                <li><a href="DezvoltareUrbana.html">Dezvoltare urbană</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <div class="footer__heading">Contact</div>
+            <ul class="footer__links">
+                <li><i data-lucide="phone"></i> 0236 000 000</li>
+                <li><i data-lucide="mail"></i> contact@orasultau.ro</li>
+                <li><i data-lucide="map-pin"></i> Galați, România</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer__bottom">
+        <span>&copy; 2026 Orașul Tău. Toate drepturile rezervate.</span>
+        <span>Realizat pentru cetățeni</span>
+    </div>
+</footer>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
     lucide.createIcons();
 </script>
-
 <script src="js/functionalitatePagini/sesizari.js"></script>
-
+<script src="js/animations.js"></script>
+<script src="js/events.js"></script>
 <script src="js/main.js"></script>
-
 <script src="js/ButonSpecial.js"></script>
 <script src="js/accesibilitate.js"></script>
 

@@ -207,3 +207,7 @@
         grid-template-columns: 1fr;
     }
 }
+.navbar__links a i {
+    margin-right: 8px;
+    vertical-index: middle;
+}
