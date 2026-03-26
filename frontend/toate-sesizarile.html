@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Toate Sesizările — Galați</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/base.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/animations.css">
     <link rel="stylesheet" href="css/toate-sesizarile.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
 
@@ -15,9 +18,9 @@
     <div class="container navbar__inner">
         <a href="index.html" class="navbar__logo">Orașul <span>Tău</span></a>
         <ul class="navbar__links">
-            <li><a href="index.html">Acasă</a></li>
-            <li><a href="despre.html">Despre</a></li>
-            <li><a href="toate-sesizarile.html" class="active">Sesizări</a></li>
+            <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
+            <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
+            <li><a href="sesizari.html" class="active"><i data-lucide="alert-circle"></i> Sesizări</a></li>
         </ul>
     </div>
 </nav>
@@ -27,7 +30,9 @@
         <span class="feed-hero__label">Transparență publică</span>
         <h1 class="feed-hero__title">Sesizările cetățenilor</h1>
         <p class="feed-hero__sub">Toate problemele raportate de cetățenii din Galați, în timp real.</p>
-        <a href="sesizari.html" class="btn btn-primary btn-lg feed-hero__cta">+ Depune o sesizare</a>
+        <a href="sesizari.html" class="btn btn-primary btn-lg feed-hero__cta">
+            <i data-lucide="plus-circle" style="margin-right: 8px;"></i> Depune o sesizare
+        </a>
     </div>
 </div>
 
@@ -45,7 +50,7 @@
             <button class="feed-chip" data-filter="Altele"><span class="chip-dot" style="background:#94a3b8"></span>Altele</button>
         </div>
         <div class="feed-sort">
-            <label for="sort-select" class="feed-sort__label">Sortează:</label>
+            <label for="sort-select" class="feed-sort__label"><i data-lucide="filter" style="width:14px; height:14px; vertical-align:middle;"></i> Sortează:</label>
             <select id="sort-select" class="feed-sort__select">
                 <option value="data-desc">Cele mai recente</option>
                 <option value="data-asc">Cele mai vechi</option>
@@ -65,11 +70,10 @@
     </div>
 
     <div class="feed-list" id="feed-list">
-        <!-- cardurile se generează din JS -->
     </div>
 
     <div class="feed-empty" id="feed-empty" hidden>
-        <div class="feed-empty__icon">🔍</div>
+        <div class="feed-empty__icon"><i data-lucide="search-x" style="width:48px; height:48px;"></i></div>
         <p>Nicio sesizare pentru această categorie.</p>
     </div>
 
@@ -93,8 +97,8 @@
             <div>
                 <div class="footer__heading">Contact</div>
                 <ul class="footer__links">
-                    <li>📞 0234 000 000</li>
-                    <li>✉️ contact@oras.ro</li>
+                    <li><i data-lucide="phone" style="width:16px; height:16px; vertical-align:middle;"></i> 0234 000 000</li>
+                    <li><i data-lucide="mail" style="width:16px; height:16px; vertical-align:middle;"></i> contact@oras.ro</li>
                 </ul>
             </div>
         </div>
@@ -108,75 +112,75 @@
 <script src="js/animations.js" defer></script>
 <script src="js/main.js" defer></script>
 <script>
-// ── DATE MOCK (înlocuiește cu fetch('/api/sesizari') când ai backend) ──
-const SESIZARI = [
-    { id: 1,  cat: 'Infrastructură deteriorată', titlu: 'Groapă adâncă pe strada Brăilei',          desc: 'Groapă de aproximativ 40cm adâncime lângă trecerea de pietoni. Risc major pentru șoferi și bicicliști.',      zona: 'Centru',   data: '2026-03-20', status: 'In lucru',  prioritate: 'Urgentă',  autor: 'Andrei M.' },
-    { id: 2,  cat: 'Iluminat stradal',           titlu: 'Stâlp de iluminat defect lângă parc',      desc: 'Stâlpul de la intrarea în Parcul Rizer nu funcționează de 2 săptămâni. Zona e complet întunecată noaptea.',  zona: 'Micro 14', data: '2026-03-18', status: 'Nou',      prioritate: 'Ridicată', autor: 'Maria P.' },
-    { id: 3,  cat: 'Gunoi / Salubritate',        titlu: 'Container supraaglomerat de 3 zile',       desc: 'Containerul de pe str. Tecuci nr. 4 nu a fost golit de 3 zile. Mirosul este insuportabil.',                   zona: 'Micro 19', data: '2026-03-17', status: 'Rezolvat', prioritate: 'Medie',    autor: 'Ion C.'   },
-    { id: 4,  cat: 'Spații verzi',               titlu: 'Copac căzut parțial pe trotuar',           desc: 'Un copac bătrân s-a rupt parțial și blochează trotuarul de pe Bulevardul George Coșbuc.',                    zona: 'Faleză',   data: '2026-03-15', status: 'In lucru',  prioritate: 'Urgentă',  autor: 'Elena D.' },
-    { id: 5,  cat: 'Transport public',           titlu: 'Stație de autobuz fără adăpost',           desc: 'Stația liniei 10 de pe str. Domnească nu are acoperiș. Pasagerii stau în ploaie.',                            zona: 'Centru',   data: '2026-03-14', status: 'Nou',      prioritate: 'Medie',    autor: 'Vasile T.'},
-    { id: 6,  cat: 'Siguranță rutieră',          titlu: 'Marcaj rutier complet șters',              desc: 'Trecerea de pietoni de la intersecția str. Brăilei cu str. Română este invizibilă.',                          zona: 'Centru',   data: '2026-03-12', status: 'Nou',      prioritate: 'Ridicată', autor: 'Ana G.'   },
-    { id: 7,  cat: 'Altele',                     titlu: 'Graffiti pe clădire de patrimoniu',        desc: 'Clădirea de pe str. Domnească 76 a fost vandalizată. Acoperă o fațadă istorică.',                             zona: 'Centru',   data: '2026-03-10', status: 'Nou',      prioritate: 'Scăzută',  autor: 'Mihai B.' },
-    { id: 8,  cat: 'Infrastructură deteriorată', titlu: 'Bordură spartă — risc pentru pietoni',     desc: 'Mai multe bucăți de bordură lipsesc pe trotuar. Persoanele în vârstă au dificultăți.',                        zona: 'Micro 17', data: '2026-03-09', status: 'In lucru',  prioritate: 'Medie',    autor: 'Doina R.' },
-    { id: 9,  cat: 'Gunoi / Salubritate',        titlu: 'Deșeuri aruncate ilegal în parc',          desc: 'Cineva a aruncat saci cu moloz în Parcul Rizer. Zona este folosită de copii.',                                zona: 'Micro 14', data: '2026-03-07', status: 'Rezolvat', prioritate: 'Medie',    autor: 'Radu N.'  },
-    { id: 10, cat: 'Iluminat stradal',           titlu: 'Stradă laterală neiluminată complet',      desc: 'Strada Independenței (tronsonul 12-30) nu are niciun stâlp funcțional de 3 săptămâni.',                       zona: 'Micro 40', data: '2026-03-05', status: 'Nou',      prioritate: 'Ridicată', autor: 'Alina S.' },
-    { id: 11, cat: 'Transport public',           titlu: 'Autobuzul liniei 5 nu respectă orarul',   desc: 'În ultimele 2 săptămâni autobuzul liniei 5 are întârzieri de 20-30 minute pe traseu.',                        zona: 'Micro 40', data: '2026-03-03', status: 'Nou',      prioritate: 'Medie',    autor: 'Bogdan F.'},
-    { id: 12, cat: 'Spații verzi',               titlu: 'Bănci distruse în parcul din cartier',     desc: 'Trei bănci din Parcul Micro 19 au șezuturile rupte. Nu mai pot fi folosite.',                                 zona: 'Micro 19', data: '2026-02-28', status: 'Rezolvat', prioritate: 'Scăzută',  autor: 'Ioana L.' },
-];
+    const SESIZARI = [
+        { id: 1,  cat: 'Infrastructură deteriorată', titlu: 'Groapă adâncă pe strada Brăilei',          desc: 'Groapă de aproximativ 40cm adâncime lângă trecerea de pietoni. Risc major pentru șoferi și bicicliști.',      zona: 'Centru',   data: '2026-03-20', status: 'In lucru',  prioritate: 'Urgentă',  autor: 'Andrei M.' },
+        { id: 2,  cat: 'Iluminat stradal',           titlu: 'Stâlp de iluminat defect lângă parc',      desc: 'Stâlpul de la intrarea în Parcul Rizer nu funcționează de 2 săptămâni. Zona e complet întunecată noaptea.',  zona: 'Micro 14', data: '2026-03-18', status: 'Nou',      prioritate: 'Ridicată', autor: 'Maria P.' },
+        { id: 3,  cat: 'Gunoi / Salubritate',        titlu: 'Container supraaglomerat de 3 zile',       desc: 'Containerul de pe str. Tecuci nr. 4 nu a fost golit de 3 zile. Mirosul este insuportabil.',                   zona: 'Micro 19', data: '2026-03-17', status: 'Rezolvat', prioritate: 'Medie',    autor: 'Ion C.'   },
+        { id: 4,  cat: 'Spații verzi',               titlu: 'Copac căzut parțial pe trotuar',           desc: 'Un copac bătrân s-a rupt parțial și blochează trotuarul de pe Bulevardul George Coșbuc.',                    zona: 'Faleză',   data: '2026-03-15', status: 'In lucru',  prioritate: 'Urgentă',  autor: 'Elena D.' },
+        { id: 5,  cat: 'Transport public',           titlu: 'Stație de autobuz fără adăpost',           desc: 'Stația liniei 10 de pe str. Domnească nu are acoperiș. Pasagerii stau în ploaie.',                            zona: 'Centru',   data: '2026-03-14', status: 'Nou',      prioritate: 'Medie',    autor: 'Vasile T.'},
+        { id: 6,  cat: 'Siguranță rutieră',          titlu: 'Marcaj rutier complet șters',              desc: 'Trecerea de pietoni de la intersecția str. Brăilei cu str. Română este invizibilă.',                          zona: 'Centru',   data: '2026-03-12', status: 'Nou',      prioritate: 'Ridicată', autor: 'Ana G.'   },
+        { id: 7,  cat: 'Altele',                     titlu: 'Graffiti pe clădire de patrimoniu',        desc: 'Clădirea de pe str. Domnească 76 a fost vandalizată. Acoperă o fațadă istorică.',                             zona: 'Centru',   data: '2026-03-10', status: 'Nou',      prioritate: 'Scăzută',  autor: 'Mihai B.' },
+        { id: 8,  cat: 'Infrastructură deteriorată', titlu: 'Bordură spartă — risc pentru pietoni',     desc: 'Mai multe bucăți de bordură lipsesc pe trotuar. Persoanele în vârstă au dificultăți.',                        zona: 'Micro 17', data: '2026-03-09', status: 'In lucru',  prioritate: 'Medie',    autor: 'Doina R.' },
+        { id: 9,  cat: 'Gunoi / Salubritate',        titlu: 'Deșeuri aruncate ilegal în parc',          desc: 'Cineva a aruncat saci cu moloz în Parcul Rizer. Zona este folosită de copii.',                                zona: 'Micro 14', data: '2026-03-07', status: 'Rezolvat', prioritate: 'Medie',    autor: 'Radu N.'  },
+        { id: 10, cat: 'Iluminat stradal',           titlu: 'Stradă laterală neiluminată complet',      desc: 'Strada Independenței (tronsonul 12-30) nu are niciun stâlp funcțional de 3 săptămâni.',                       zona: 'Micro 40', data: '2026-03-05', status: 'Nou',      prioritate: 'Ridicată', autor: 'Alina S.' },
+        { id: 11, cat: 'Transport public',           titlu: 'Autobuzul liniei 5 nu respectă orarul',   desc: 'În ultimele 2 săptămâni autobuzul liniei 5 are întârzieri de 20-30 minute pe traseu.',                        zona: 'Micro 40', data: '2026-03-03', status: 'Nou',      prioritate: 'Medie',    autor: 'Bogdan F.'},
+        { id: 12, cat: 'Spații verzi',               titlu: 'Bănci distruse în parcul din cartier',     desc: 'Trei bănci din Parcul Micro 19 au șezuturile rupte. Nu mai pot fi folosite.',                                 zona: 'Micro 19', data: '2026-02-28', status: 'Rezolvat', prioritate: 'Scăzută',  autor: 'Ioana L.' },
+    ];
 
-const CAT_COLORS = {
-    'Infrastructură deteriorată': '#f97316',
-    'Iluminat stradal':           '#eab308',
-    'Gunoi / Salubritate':        '#22c55e',
-    'Spații verzi':               '#10b981',
-    'Transport public':           '#3b82f6',
-    'Siguranță rutieră':          '#e53e3e',
-    'Altele':                     '#94a3b8',
-};
+    const CAT_COLORS = {
+        'Infrastructură deteriorată': '#f97316',
+        'Iluminat stradal':           '#eab308',
+        'Gunoi / Salubritate':        '#22c55e',
+        'Spații verzi':               '#10b981',
+        'Transport public':           '#3b82f6',
+        'Siguranță rutieră':          '#e53e3e',
+        'Altele':                     '#94a3b8',
+    };
 
-const PRIO_ORDER = { 'Urgentă': 0, 'Ridicată': 1, 'Medie': 2, 'Scăzută': 3 };
-const STATUS_ORDER = { 'In lucru': 0, 'Nou': 1, 'Rezolvat': 2 };
+    const PRIO_ORDER = { 'Urgentă': 0, 'Ridicată': 1, 'Medie': 2, 'Scăzută': 3 };
+    const STATUS_ORDER = { 'In lucru': 0, 'Nou': 1, 'Rezolvat': 2 };
 
-let activeFilter = 'toate';
-let activeSort   = 'data-desc';
+    let activeFilter = 'toate';
+    let activeSort   = 'data-desc';
 
-function formatDate(iso) {
-    const d = new Date(iso);
-    return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
-}
-
-function initials(name) {
-    return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
-}
-
-function renderFeed() {
-    let list = SESIZARI.filter(s => activeFilter === 'toate' || s.cat === activeFilter);
-
-    if (activeSort === 'data-desc')   list.sort((a, b) => b.data.localeCompare(a.data));
-    if (activeSort === 'data-asc')    list.sort((a, b) => a.data.localeCompare(b.data));
-    if (activeSort === 'prioritate')  list.sort((a, b) => PRIO_ORDER[a.prioritate] - PRIO_ORDER[b.prioritate]);
-    if (activeSort === 'status')      list.sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
-
-    const container = document.getElementById('feed-list');
-    const empty     = document.getElementById('feed-empty');
-    const countEl   = document.getElementById('feed-count');
-
-    countEl.textContent = `${list.length} sesizare${list.length !== 1 ? '' : 'a'}`;
-
-    if (list.length === 0) {
-        container.innerHTML = '';
-        empty.hidden = false;
-        return;
+    function formatDate(iso) {
+        const d = new Date(iso);
+        return d.toLocaleDateString('ro-RO', { day: 'numeric', month: 'long', year: 'numeric' });
     }
-    empty.hidden = true;
 
-    container.innerHTML = list.map(s => {
-        const color      = CAT_COLORS[s.cat] || '#94a3b8';
-        const statusCls  = s.status === 'Rezolvat' ? 'status-rezolvat' : s.status === 'In lucru' ? 'status-lucru' : 'status-nou';
-        const statusLbl  = s.status === 'In lucru' ? 'În lucru' : s.status;
-        const prioCls    = s.prioritate === 'Urgentă' ? 'prio-urgenta' : s.prioritate === 'Ridicată' ? 'prio-ridicata' : s.prioritate === 'Medie' ? 'prio-medie' : 'prio-scazuta';
+    function initials(name) {
+        return name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    }
 
-        return `
+    function renderFeed() {
+        let list = SESIZARI.filter(s => activeFilter === 'toate' || s.cat === activeFilter);
+
+        if (activeSort === 'data-desc')   list.sort((a, b) => b.data.localeCompare(a.data));
+        if (activeSort === 'data-asc')    list.sort((a, b) => a.data.localeCompare(b.data));
+        if (activeSort === 'prioritate')  list.sort((a, b) => PRIO_ORDER[a.prioritate] - PRIO_ORDER[b.prioritate]);
+        if (activeSort === 'status')      list.sort((a, b) => STATUS_ORDER[a.status] - STATUS_ORDER[b.status]);
+
+        const container = document.getElementById('feed-list');
+        const empty     = document.getElementById('feed-empty');
+        const countEl   = document.getElementById('feed-count');
+
+        countEl.textContent = `${list.length} sesizare${list.length !== 1 ? '' : 'a'}`;
+
+        if (list.length === 0) {
+            container.innerHTML = '';
+            empty.hidden = false;
+            lucide.createIcons();
+            return;
+        }
+        empty.hidden = true;
+
+        container.innerHTML = list.map(s => {
+            const color      = CAT_COLORS[s.cat] || '#94a3b8';
+            const statusCls  = s.status === 'Rezolvat' ? 'status-rezolvat' : s.status === 'In lucru' ? 'status-lucru' : 'status-nou';
+            const statusLbl  = s.status === 'In lucru' ? 'În lucru' : s.status;
+            const prioCls    = s.prioritate === 'Urgentă' ? 'prio-urgenta' : s.prioritate === 'Ridicată' ? 'prio-ridicata' : s.prioritate === 'Medie' ? 'prio-medie' : 'prio-scazuta';
+
+            return `
         <article class="sez-card" style="border-left-color:${color}">
             <div class="sez-card__avatar" style="background:${color}20; color:${color}">${initials(s.autor)}</div>
             <div class="sez-card__body">
@@ -184,35 +188,41 @@ function renderFeed() {
                     <span class="sez-card__cat" style="color:${color}">
                         <span class="chip-dot" style="background:${color}"></span>${s.cat}
                     </span>
-                    <span class="sez-card__zona">📍 ${s.zona}</span>
-                    <span class="sez-card__date">${formatDate(s.data)}</span>
+                    <span class="sez-card__zona"><i data-lucide="map-pin" style="width:12px;height:12px;"></i> ${s.zona}</span>
+                    <span class="sez-card__date"><i data-lucide="calendar" style="width:12px;height:12px;"></i> ${formatDate(s.data)}</span>
                 </div>
                 <h3 class="sez-card__titlu">${s.titlu}</h3>
                 <p class="sez-card__desc">${s.desc}</p>
                 <div class="sez-card__footer">
                     <span class="status-pill ${statusCls}">${statusLbl}</span>
                     <span class="prio-badge ${prioCls}">${s.prioritate}</span>
-                    <span class="sez-card__autor">de ${s.autor}</span>
+                    <span class="sez-card__autor"><i data-lucide="user" style="width:12px;height:12px;"></i> de ${s.autor}</span>
                 </div>
             </div>
         </article>`;
-    }).join('');
-}
+        }).join('');
 
-document.getElementById('feed-filters').addEventListener('click', e => {
-    const chip = e.target.closest('.feed-chip');
-    if (!chip) return;
-    activeFilter = chip.dataset.filter;
-    document.querySelectorAll('.feed-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === activeFilter));
-    renderFeed();
-});
+        lucide.createIcons();
+    }
 
-document.getElementById('sort-select').addEventListener('change', e => {
-    activeSort = e.target.value;
-    renderFeed();
-});
+    document.getElementById('feed-filters').addEventListener('click', e => {
+        const chip = e.target.closest('.feed-chip');
+        if (!chip) return;
+        activeFilter = chip.dataset.filter;
+        document.querySelectorAll('.feed-chip').forEach(c => c.classList.toggle('active', c.dataset.filter === activeFilter));
+        renderFeed();
+    });
 
-renderFeed();
+    document.getElementById('sort-select').addEventListener('change', e => {
+        activeSort = e.target.value;
+        renderFeed();
+    });
+
+    // Inițializare iconițe la prima încărcare
+    window.addEventListener('DOMContentLoaded', () => {
+        lucide.createIcons();
+        renderFeed();
+    });
 </script>
 
 </body>

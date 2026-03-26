@@ -5,11 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sesizări — Galați</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
     <link rel="stylesheet" href="css/sesizari.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
 </head>
 <body>
+
+<nav class="navbar">
+    <div class="container navbar__inner">
+        <a href="index.html" class="navbar__logo">
+            Orașul <span>Tău</span>
+        </a>
+        <ul class="navbar__links">
+            <li><a href="index.html"><i data-lucide="home"></i> Acasă</a></li>
+            <li><a href="despre.html"><i data-lucide="info"></i> Despre</a></li>
+            <li><a href="sesizari.html" class="active"><i data-lucide="alert-circle"></i> Sesizări</a></li>
+        </ul>
+    </div>
+</nav>
 
 <div class="hero">
     <div class="hero-inner">
@@ -127,5 +141,8 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script src="js/sesizari.js"></script>
+<script>
+    lucide.createIcons();
+</script>
 </body>
 </html>
