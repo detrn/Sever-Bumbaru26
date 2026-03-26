@@ -34,5 +34,8 @@ function getPropuneriCollection() {
   }
   return propuneriCollection;
 }
+function getColectieCom(){
+  return db.collection("comentarii");
+}
 
-module.exports = { connectDB, getPropuneriCollection, getReportsCollection, getUsersCollection, };
+module.exports = { connectDB, getPropuneriCollection, getReportsCollection, getUsersCollection,getColectieCom };

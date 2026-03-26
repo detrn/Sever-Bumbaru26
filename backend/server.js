@@ -2,7 +2,7 @@
 const { createServer } = require('node:http');
 const fs   = require('fs');
 const path = require('path');
-const { connectDB, getReportsCollection, getUsersCollection, getPropuneriCollection } = require('./database.js');
+const { connectDB, getReportsCollection, getUsersCollection, getPropuneriCollection , getColectieCom} = require('./database.js');
 const { ObjectId } = require('mongodb');
 const port = 3000;
 
@@ -206,7 +206,75 @@ const server = createServer(async (req, res) => {
   }
 */
   ///
+// ===== API/COMENTARII GET =====
+  if (filePath === "api/comentarii" && req.method === "GET") {
+    try {
+      const url = new URL(req.url, `http://${req.headers.host}`);
+      const propunereId = url.searchParams.get('propunereId');
 
+      if (!propunereId) {
+        res.statusCode = 400;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: "Lipsește propunereId" }));
+        return;
+      }
+
+      const col = getColectieCom();
+      const comentarii = await col.find({
+        propunereId: new ObjectId(propunereId)
+      }).toArray();
+
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(comentarii));
+    } catch (err) {
+      console.error("Eroare GET /api/comentarii:", err);
+      res.statusCode = 500;
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify({ error: err.message }));
+    }
+    return;
+  }
+
+// ===== API/COMENTARII POST =====
+  if (filePath === "api/comentarii" && req.method === "POST") {
+    let body = "";
+    req.on('data', chunk => body += chunk);
+    req.on('end', async () => {
+      try {
+        const data = JSON.parse(body);
+
+        if (!data.propunereId || !data.continut) {
+          res.statusCode = 400;
+          res.setHeader("Content-Type", "application/json");
+          res.end(JSON.stringify({ error: "Lipsesc câmpuri obligatorii" }));
+          return;
+        }
+
+        // Dacă nu s-a trimis autor, pune "Anonim"
+        const autor = data.autor && data.autor.trim() !== "" ? data.autor : "Anonim";
+
+        const col = getColectieCom();
+        const result = await col.insertOne({
+          propunereId: new ObjectId(data.propunereId),
+          autor: autor,
+          continut: data.continut,
+          dataCreare: new Date(),
+          voturi: 0
+        });
+
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ succes: true, id: result.insertedId }));
+      } catch (err) {
+        console.error("Eroare POST /api/comentarii:", err);
+        res.statusCode = 500;
+        res.setHeader("Content-Type", "application/json");
+        res.end(JSON.stringify({ error: err.message }));
+      }
+    });
+    return;
+  }
+
+  //
   // ===== API/REPORTS GET =====
   if (filePath === "api/reports" && req.method === "GET") {
     const colectie = getReportsCollection();
